@@ -1,4 +1,4 @@
-# ContratAqui - 5º Semestre
+# Contrataqui - 5º Semestre
 
 ## Visão do Produto
  
