@@ -1,5 +1,11 @@
 ## ContratAqui - 5º Semestre
 
+# Visão do Produto
+ 
+Um marketplace digital de serviços que facilita a conexão entre clientes a profissionais prestadores de serviços.
+ 
+## Backlog do Produto
+ 
 ### Prototipação
  
 - Prototipação das telas do aplicativo mobile.
