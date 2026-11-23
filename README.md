@@ -223,17 +223,17 @@ Situação do backlog do produto em 06/11/2026. A tabela abaixo apresenta cada f
 | Perfil profissional | Concluído |
 | Notificações (tela já integrada à API; aguardando registros no banco) | Concluído |
 | Solicitação de orçamento pelo cliente | Planejado |
-| Resposta/gerenciamento de orçamento pelo profissional | Planejado |
-| Aprovação/contratação do serviço | Planejado |
-| Contrato (tela com as informações do contrato) | Planejado |
-| Agendamento do serviço | Em execução |
-| Agendamentos (painel com os contratos do usuário) | Em execução |
-| Histórico de serviços | Planejado |
-| Edição básica de perfil | Em execução |
-| Minha Conta (configurações) | Em execução |
+| Resposta/gerenciamento de orçamento pelo profissional | Concluído |
+| Aprovação/contratação do serviço | Concluído |
+| Contrato (tela com as informações do contrato) | Concluído |
+| Agendamento do serviço |  Concluído |
+| Agendamentos (painel com os contratos do usuário) | Concluído |
+| Histórico de serviços | Concluído |
+| Edição básica de perfil | Concluído |
+| Minha Conta (configurações) | Concluído |
 | Avaliação do serviço/profissional | Planejado |
-| Chat em tempo real no mobile | Planejado |
-| Notificações push | Fora do escopo |
+| Chat em tempo real no mobile | Concluído |
+| Notificações push | Concluído |
 | Funcionalidades administrativas | Fora do escopo |
  
 #### Planejamento das sprints
