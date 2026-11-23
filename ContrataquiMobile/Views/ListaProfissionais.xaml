@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:ContrataquiMobile.Models"
+             xmlns:views="clr-namespace:ContrataquiMobile.Views"
+             x:Class="ContrataquiMobile.Views.ListaProfissionais"
+             x:DataType="views:ListaProfissionais"
+             Title="Profissionais"
+             BackgroundColor="#F9F9FF"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <Color x:Key="Primary">#002045</Color>
+        <Color x:Key="PrimaryContainer">#1A365D</Color>
+        <Color x:Key="Secondary">#13696A</Color>
+        <Color x:Key="Accent">#FFB866</Color>
+        <Color x:Key="OnAccent">#321B00</Color>
+        <Color x:Key="OnSurface">#111C2C</Color>
+        <Color x:Key="OnSurfaceVariant">#43474E</Color>
+        <Color x:Key="Outline">#74777F</Color>
+
+        <Style x:Key="CampoBorda" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="StrokeThickness" Value="0" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 8" />
+            <Setter Property="HeightRequest" Value="48" />
+            <Setter Property="Padding" Value="14,0" />
+        </Style>
+
+        <Style x:Key="CampoEntry" TargetType="Entry">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+            <Setter Property="PlaceholderColor" Value="#9AA0A8" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="VerticalOptions" Value="Center" />
+        </Style>
+
+        <Style x:Key="CampoPicker" TargetType="Picker">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+            <Setter Property="TitleColor" Value="#9AA0A8" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="VerticalOptions" Value="Center" />
+        </Style>
+
+        <Style x:Key="CampoLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid>
+
+        <!-- Página -->
+        <Grid RowDefinitions="Auto,*,Auto">
+
+            <!-- Header -->
+            <Grid Grid.Row="0"
+                  ColumnDefinitions="Auto,*"
+                  ColumnSpacing="4"
+                  Padding="12,12,20,12">
+                <Grid WidthRequest="44" HeightRequest="44">
+                    <Label Text="&#xE5C4;"
+                           FontFamily="MaterialIcons"
+                           FontSize="24"
+                           TextColor="{StaticResource Primary}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Voltar_Tapped" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+                <Label Grid.Column="1"
+                       Text="Profissionais"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource PrimaryContainer}"
+                       VerticalOptions="Center" />
+            </Grid>
+
+            <ScrollView Grid.Row="1">
+                <VerticalStackLayout Padding="20,8,20,32" Spacing="16">
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Encontre profissionais"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Primary}" />
+                        <Label x:Name="lbl_contagem"
+                               FontSize="13"
+                               TextColor="{StaticResource OnSurfaceVariant}" />
+                    </VerticalStackLayout>
+
+                    <!-- Busca + botão de filtros -->
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <Border Style="{StaticResource CampoBorda}">
+                            <Entry x:Name="txt_busca"
+                                   Placeholder="Nome, serviço ou cidade"
+                                   Style="{StaticResource CampoEntry}"
+                                   TextChanged="Busca_TextChanged" />
+                        </Border>
+
+                        <Border Grid.Column="1"
+                                WidthRequest="48"
+                                HeightRequest="48"
+                                BackgroundColor="White"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 8">
+                            <Grid>
+                                <Label Text="&#xE429;"
+                                       FontFamily="MaterialIcons"
+                                       FontSize="24"
+                                       TextColor="{StaticResource Primary}"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                                <Border x:Name="bdg_filtros"
+                                        IsVisible="False"
+                                        WidthRequest="18"
+                                        HeightRequest="18"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 9"
+                                        BackgroundColor="{StaticResource Accent}"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Start"
+                                        Margin="0,3,3,0">
+                                    <Label x:Name="lbl_filtros_badge"
+                                           FontSize="10"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource OnAccent}"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center" />
+                                </Border>
+                            </Grid>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Filtros_Tapped" />
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </Grid>
+
+                    <!-- Filtros ativos -->
+                    <FlexLayout x:Name="flx_chips"
+                                Wrap="Wrap"
+                                IsVisible="False"
+                                BindableLayout.ItemsSource="{Binding Chips}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="views:ChipFiltro">
+                                <Border BackgroundColor="#E6F6F6"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 14"
+                                        Padding="12,6"
+                                        Margin="0,0,8,8">
+                                    <HorizontalStackLayout Spacing="6">
+                                        <Label Text="{Binding Texto}"
+                                               FontSize="12"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource Secondary}"
+                                               VerticalOptions="Center" />
+                                        <Label Text="✕"
+                                               FontSize="12"
+                                               TextColor="{StaticResource Secondary}"
+                                               VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="Chip_Tapped" />
+                                    </Border.GestureRecognizers>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </FlexLayout>
+
+                    <ActivityIndicator x:Name="ind_carregando"
+                                       Color="{StaticResource Secondary}"
+                                       IsRunning="False"
+                                       IsVisible="False" />
+
+                    <Label x:Name="lbl_erro"
+                           FontSize="13"
+                           TextColor="{StaticResource OnSurfaceVariant}"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           IsVisible="False">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Erro_Tapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <Label x:Name="lbl_vazio"
+                           Text="Nenhum profissional encontrado com esses filtros."
+                           FontSize="13"
+                           TextColor="{StaticResource OnSurfaceVariant}"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           IsVisible="False" />
+
+                    <!-- Lista -->
+                    <VerticalStackLayout Spacing="14"
+                                         BindableLayout.ItemsSource="{Binding Itens}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:Profissional">
+                                <Border BackgroundColor="White"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 12">
+                                    <VerticalStackLayout Spacing="0">
+
+                                        <Grid HeightRequest="150"
+                                              BackgroundColor="{StaticResource PrimaryContainer}">
+                                            <Label Text="{Binding Iniciais}"
+                                                   FontSize="40"
+                                                   FontAttributes="Bold"
+                                                   TextColor="White"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center" />
+                                            <Image Source="{Binding ImagemPerfil}"
+                                                   Aspect="AspectFill"
+                                                   IsVisible="{Binding TemFoto}" />
+                                            <Border BackgroundColor="#E6FFFFFF"
+                                                    StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 12"
+                                                    Padding="10,4"
+                                                    HorizontalOptions="Start"
+                                                    VerticalOptions="Start"
+                                                    Margin="12">
+                                                <HorizontalStackLayout Spacing="4">
+                                                    <Label Text="&#xE86C;"
+                                                           FontFamily="MaterialIcons"
+                                                           FontSize="14"
+                                                           TextColor="{StaticResource Secondary}"
+                                                           VerticalOptions="Center" />
+                                                    <Label Text="VERIFICADO"
+                                                           FontSize="10"
+                                                           FontAttributes="Bold"
+                                                           TextColor="{StaticResource Secondary}"
+                                                           VerticalOptions="Center" />
+                                                </HorizontalStackLayout>
+                                            </Border>
+                                        </Grid>
+
+                                        <VerticalStackLayout Padding="16" Spacing="6">
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                <Label Text="{Binding Nome}"
+                                                       FontSize="16"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{StaticResource Primary}" />
+                                                <Label Grid.Column="1"
+                                                       IsVisible="{Binding TemNota}"
+                                                       FontSize="13">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="★ " TextColor="#D4903B" />
+                                                            <Span Text="{Binding Nota}"
+                                                                  FontAttributes="Bold"
+                                                                  TextColor="{StaticResource OnSurface}" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </Grid>
+
+                                            <Label Text="{Binding ServicoPrincipal}"
+                                                   IsVisible="{Binding TemServicos}"
+                                                   FontSize="12"
+                                                   FontAttributes="Bold"
+                                                   TextColor="{StaticResource Secondary}" />
+
+                                            <Label Text="{Binding DescricaoResumo}"
+                                                   FontSize="12"
+                                                   TextColor="{StaticResource OnSurfaceVariant}"
+                                                   MaxLines="2"
+                                                   LineBreakMode="TailTruncation" />
+
+                                            <HorizontalStackLayout Spacing="2"
+                                                                   IsVisible="{Binding TemLocal}">
+                                                <Label Text="&#xE55F;"
+                                                       FontFamily="MaterialIcons"
+                                                       FontSize="16"
+                                                       TextColor="{StaticResource Outline}"
+                                                       VerticalOptions="Center" />
+                                                <Label Text="{Binding Local}"
+                                                       FontSize="12"
+                                                       TextColor="{StaticResource OnSurfaceVariant}"
+                                                       VerticalOptions="Center" />
+                                            </HorizontalStackLayout>
+
+                                            <Button Text="Ver Perfil"
+                                                    Clicked="VerPerfil_Clicked"
+                                                    BackgroundColor="Transparent"
+                                                    BorderColor="{StaticResource Primary}"
+                                                    BorderWidth="2"
+                                                    TextColor="{StaticResource Primary}"
+                                                    FontAttributes="Bold"
+                                                    FontSize="13"
+                                                    CornerRadius="8"
+                                                    HeightRequest="44"
+                                                    Margin="0,6,0,0" />
+                                        </VerticalStackLayout>
+                                    </VerticalStackLayout>
+
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="Card_Tapped" />
+                                    </Border.GestureRecognizers>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+
+                    <Button x:Name="btn_ver_mais"
+                            Text="Ver mais"
+                            Clicked="VerMais_Clicked"
+                            IsVisible="False"
+                            BackgroundColor="#E7EEFF"
+                            TextColor="{StaticResource Primary}"
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            CornerRadius="8"
+                            HeightRequest="48" />
+
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <views:BarraNavegacao Grid.Row="2" />
+        </Grid>
+
+        <!-- Folha de filtros -->
+        <Grid x:Name="grd_filtros" IsVisible="False">
+
+            <BoxView x:Name="fundo_filtros" Color="#66000000">
+                <BoxView.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="FecharFiltros_Tapped" />
+                </BoxView.GestureRecognizers>
+            </BoxView>
+
+            <Border x:Name="bdr_sheet"
+                    VerticalOptions="End"
+                    BackgroundColor="#F9F9FF"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 20,20,0,0">
+
+                <Grid RowDefinitions="Auto,*,Auto"
+                      Padding="20,16,20,16">
+
+                    <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                        <Label Text="Filtros"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Primary}"
+                               VerticalOptions="Center" />
+                        <Label x:Name="lbl_limpar"
+                               Grid.Column="1"
+                               Text="Limpar tudo"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="#BA1A1A"
+                               VerticalOptions="Center"
+                               IsVisible="False">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Limpar_Tapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+
+                    <ScrollView Grid.Row="1">
+                        <VerticalStackLayout Spacing="16" Padding="0,14">
+
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Categoria" Style="{StaticResource CampoLabel}" />
+                                <Border Style="{StaticResource CampoBorda}">
+                                    <Picker x:Name="pck_categoria"
+                                            Title="Todas"
+                                            SelectedIndexChanged="Categoria_Changed"
+                                            Style="{StaticResource CampoPicker}" />
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Serviço" Style="{StaticResource CampoLabel}" />
+                                <Border Style="{StaticResource CampoBorda}">
+                                    <Picker x:Name="pck_servico"
+                                            Title="Todos"
+                                            IsEnabled="False"
+                                            SelectedIndexChanged="Servico_Changed"
+                                            Style="{StaticResource CampoPicker}" />
+                                </Border>
+                                <Label x:Name="lbl_dica_servico"
+                                       Text="Selecione uma categoria primeiro"
+                                       FontSize="11"
+                                       TextColor="{StaticResource Outline}" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Estado" Style="{StaticResource CampoLabel}" />
+                                <Border Style="{StaticResource CampoBorda}">
+                                    <Picker x:Name="pck_estado"
+                                            Title="Todos"
+                                            SelectedIndexChanged="Estado_Changed"
+                                            Style="{StaticResource CampoPicker}" />
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Cidade" Style="{StaticResource CampoLabel}" />
+                                <Border Style="{StaticResource CampoBorda}">
+                                    <Entry x:Name="txt_cidade"
+                                           Placeholder="Ex.: São Paulo"
+                                           Style="{StaticResource CampoEntry}"
+                                           TextChanged="Cidade_TextChanged" />
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Avaliação mínima" Style="{StaticResource CampoLabel}" />
+                                <Border Style="{StaticResource CampoBorda}">
+                                    <Picker x:Name="pck_avaliacao"
+                                            SelectedIndexChanged="Avaliacao_Changed"
+                                            Style="{StaticResource CampoPicker}" />
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Ordenar por" Style="{StaticResource CampoLabel}" />
+                                <Border Style="{StaticResource CampoBorda}">
+                                    <Picker x:Name="pck_ordem"
+                                            SelectedIndexChanged="Ordem_Changed"
+                                            Style="{StaticResource CampoPicker}" />
+                                </Border>
+                            </VerticalStackLayout>
+
+                        </VerticalStackLayout>
+                    </ScrollView>
+
+                    <Button x:Name="btn_aplicar"
+                            Grid.Row="2"
+                            Text="Ver resultados"
+                            Clicked="Aplicar_Clicked"
+                            BackgroundColor="{StaticResource Accent}"
+                            TextColor="{StaticResource OnAccent}"
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            CornerRadius="8"
+                            HeightRequest="48" />
+                </Grid>
+
+                <!-- Impede que toques na folha cheguem ao fundo escuro -->
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Folha_Tapped" />
+                </Border.GestureRecognizers>
+            </Border>
+        </Grid>
+
+    </Grid>
+</ContentPage>

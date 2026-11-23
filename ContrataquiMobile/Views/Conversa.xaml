@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:ContrataquiMobile.Models"
+             xmlns:views="clr-namespace:ContrataquiMobile.Views"
+             x:Class="ContrataquiMobile.Views.Conversa"
+             x:DataType="views:Conversa"
+             Title="Conversa"
+             BackgroundColor="#F9F9FF"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <Color x:Key="Primary">#002045</Color>
+        <Color x:Key="PrimaryContainer">#1A365D</Color>
+        <Color x:Key="Secondary">#13696A</Color>
+        <Color x:Key="OnSurfaceVariant">#43474E</Color>
+        <Color x:Key="Outline">#74777F</Color>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Header -->
+        <VerticalStackLayout Grid.Row="0" Spacing="0" BackgroundColor="White">
+            <Grid ColumnDefinitions="Auto,Auto,*"
+                  ColumnSpacing="8"
+                  Padding="12,10,20,10">
+                <Grid WidthRequest="44" HeightRequest="44">
+                    <Label Text="&#xE5C4;"
+                           FontFamily="MaterialIcons"
+                           FontSize="24"
+                           TextColor="{StaticResource Primary}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Voltar_Tapped" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+
+                <Border Grid.Column="1"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                        BackgroundColor="{StaticResource Primary}"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 20"
+                        VerticalOptions="Center">
+                    <Grid>
+                        <Label x:Name="lbl_inicial"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                        <Image x:Name="img_foto"
+                               IsVisible="False"
+                               Aspect="AspectFill" />
+                    </Grid>
+                </Border>
+
+                <VerticalStackLayout Grid.Column="2" VerticalOptions="Center" Spacing="0">
+                    <Label x:Name="lbl_nome"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}"
+                           LineBreakMode="TailTruncation" />
+                    <Label x:Name="lbl_contrato"
+                           FontSize="11"
+                           TextColor="{StaticResource Secondary}"
+                           LineBreakMode="TailTruncation" />
+                </VerticalStackLayout>
+            </Grid>
+            <BoxView HeightRequest="1" Color="#E1E8F5" />
+        </VerticalStackLayout>
+
+        <!-- Mensagens -->
+        <Grid Grid.Row="1">
+            <ScrollView x:Name="scv_mensagens">
+                <VerticalStackLayout x:Name="stk_mensagens"
+                                     Padding="16,12,16,12"
+                                     Spacing="6"
+                                     BindableLayout.ItemsSource="{Binding Itens}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:Mensagem">
+                            <VerticalStackLayout Spacing="2" HorizontalOptions="{Binding Alinhamento}">
+                                <Border BackgroundColor="{Binding CorBalao}"
+                                        Stroke="{Binding CorBorda}"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 16"
+                                        Padding="12,8"
+                                        MaximumWidthRequest="280"
+                                        HorizontalOptions="{Binding Alinhamento}">
+                                    <Label Text="{Binding Texto}"
+                                           FontSize="14"
+                                           TextColor="{Binding CorTexto}" />
+                                </Border>
+                                <Label Text="{Binding TickTexto}"
+                                       IsVisible="{Binding MostrarTick}"
+                                       FontSize="10"
+                                       TextColor="{StaticResource Outline}"
+                                       HorizontalOptions="End" />
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <ActivityIndicator x:Name="ind_carregando"
+                               Color="{StaticResource Secondary}"
+                               IsRunning="False"
+                               IsVisible="False"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+
+            <Label x:Name="lbl_aviso"
+                   FontSize="13"
+                   TextColor="{StaticResource OnSurfaceVariant}"
+                   HorizontalTextAlignment="Center"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Padding="24"
+                   IsVisible="False">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Aviso_Tapped" />
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+
+        <!-- Campo de envio -->
+        <VerticalStackLayout Grid.Row="2" Spacing="0" BackgroundColor="White">
+            <BoxView HeightRequest="1" Color="#E1E8F5" />
+            <Grid x:Name="grd_envio"
+                  ColumnDefinitions="*,Auto"
+                  ColumnSpacing="10"
+                  Padding="16,10,16,12">
+                <Border BackgroundColor="#F0F3FF"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 22"
+                        Padding="16,0"
+                        HeightRequest="44">
+                    <Entry x:Name="txt_mensagem"
+                           Placeholder="Digite sua mensagem"
+                           PlaceholderColor="#9AA0A8"
+                           TextColor="#111C2C"
+                           FontSize="14"
+                           BackgroundColor="Transparent"
+                           MaxLength="1000"
+                           ReturnType="Send"
+                           Completed="Enviar_Completed"
+                           VerticalOptions="Center" />
+                </Border>
+
+                <Border Grid.Column="1"
+                        WidthRequest="44"
+                        HeightRequest="44"
+                        BackgroundColor="#FFB866"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 22">
+                    <Label Text="&#xE163;"
+                           FontFamily="MaterialIcons"
+                           FontSize="22"
+                           TextColor="#321B00"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Enviar_Tapped" />
+                    </Border.GestureRecognizers>
+                </Border>
+            </Grid>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ContrataquiMobile.Views.AcaoContrato"
+             Title="Contrato"
+             BackgroundColor="#F9F9FF"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <Color x:Key="Primary">#002045</Color>
+        <Color x:Key="PrimaryContainer">#1A365D</Color>
+        <Color x:Key="Secondary">#13696A</Color>
+        <Color x:Key="Accent">#FFB866</Color>
+        <Color x:Key="OnAccent">#321B00</Color>
+        <Color x:Key="OnSurface">#111C2C</Color>
+        <Color x:Key="OnSurfaceVariant">#43474E</Color>
+        <Color x:Key="Outline">#74777F</Color>
+
+        <Style x:Key="CampoBorda" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="StrokeThickness" Value="0" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 8" />
+            <Setter Property="HeightRequest" Value="48" />
+            <Setter Property="Padding" Value="14,0" />
+        </Style>
+
+        <Style x:Key="CampoEntry" TargetType="Entry">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+            <Setter Property="PlaceholderColor" Value="#9AA0A8" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="VerticalOptions" Value="Center" />
+        </Style>
+
+        <Style x:Key="CampoLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        </Style>
+
+        <Style x:Key="Estrela" TargetType="Label">
+            <Setter Property="FontSize" Value="38" />
+            <Setter Property="TextColor" Value="#D1D5DB" />
+            <Setter Property="Text" Value="★" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto,*"
+              ColumnSpacing="4"
+              Padding="12,12,20,12">
+            <Grid WidthRequest="44" HeightRequest="44">
+                <Label Text="&#xE5C4;"
+                       FontFamily="MaterialIcons"
+                       FontSize="24"
+                       TextColor="{StaticResource Primary}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Voltar_Tapped" />
+                </Grid.GestureRecognizers>
+            </Grid>
+            <Label x:Name="lbl_titulo_pagina"
+                   Grid.Column="1"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource PrimaryContainer}"
+                   VerticalOptions="Center" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,8,20,32" Spacing="18" MaximumWidthRequest="480">
+
+                <Label x:Name="lbl_intro"
+                       FontSize="14"
+                       TextColor="{StaticResource OnSurfaceVariant}" />
+
+                <!-- Visita -->
+                <VerticalStackLayout x:Name="stk_visita" Spacing="14" IsVisible="False">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Data" Style="{StaticResource CampoLabel}" />
+                        <Border Style="{StaticResource CampoBorda}">
+                            <DatePicker x:Name="dtp_data"
+                                        Format="dd/MM/yyyy"
+                                        TextColor="{StaticResource OnSurface}"
+                                        BackgroundColor="Transparent"
+                                        VerticalOptions="Center" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Horário" Style="{StaticResource CampoLabel}" />
+                        <Border Style="{StaticResource CampoBorda}">
+                            <TimePicker x:Name="tmp_hora"
+                                        Format="HH:mm"
+                                        TextColor="{StaticResource OnSurface}"
+                                        BackgroundColor="Transparent"
+                                        VerticalOptions="Center" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Motivo (opcional)" Style="{StaticResource CampoLabel}" />
+                        <Border Style="{StaticResource CampoBorda}">
+                            <Entry x:Name="txt_motivo"
+                                   Placeholder="Ex.: Avaliar o local e tirar medidas"
+                                   MaxLength="200"
+                                   Style="{StaticResource CampoEntry}" />
+                        </Border>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- Proposta -->
+                <VerticalStackLayout x:Name="stk_proposta" Spacing="14" IsVisible="False">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Valor do serviço (R$)" Style="{StaticResource CampoLabel}" />
+                        <Border Style="{StaticResource CampoBorda}">
+                            <Entry x:Name="txt_valor_base"
+                                   Placeholder="0,00"
+                                   Keyboard="Numeric"
+                                   TextChanged="Moeda_TextChanged"
+                                   Style="{StaticResource CampoEntry}" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Margem para imprevistos (R$)" Style="{StaticResource CampoLabel}" />
+                        <Border Style="{StaticResource CampoBorda}">
+                            <Entry x:Name="txt_teto"
+                                   Placeholder="0,00"
+                                   Keyboard="Numeric"
+                                   TextChanged="Moeda_TextChanged"
+                                   Style="{StaticResource CampoEntry}" />
+                        </Border>
+                        <Label Text="Imprevistos até esse valor entram sozinhos. Acima dele, o cliente precisa aprovar."
+                               FontSize="11"
+                               TextColor="{StaticResource Outline}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="O que está incluso (opcional)" Style="{StaticResource CampoLabel}" />
+                        <Border BackgroundColor="White"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 8"
+                                Padding="14,6">
+                            <Editor x:Name="txt_escopo"
+                                    Placeholder="Materiais, prazo, o que será feito..."
+                                    PlaceholderColor="#9AA0A8"
+                                    TextColor="{StaticResource OnSurface}"
+                                    FontSize="14"
+                                    AutoSize="TextChanges"
+                                    MinimumHeightRequest="100"
+                                    MaxLength="2000"
+                                    BackgroundColor="Transparent" />
+                        </Border>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- Imprevisto -->
+                <VerticalStackLayout x:Name="stk_imprevisto" Spacing="14" IsVisible="False">
+                    <Border BackgroundColor="#F0FDFA"
+                            Stroke="#0D9488"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 10"
+                            Padding="14,10">
+                        <Label x:Name="lbl_margem"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="#0F766E" />
+                    </Border>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="O que aconteceu?" Style="{StaticResource CampoLabel}" />
+                        <Border BackgroundColor="White"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 8"
+                                Padding="14,6">
+                            <Editor x:Name="txt_imprevisto"
+                                    Placeholder="Descreva o imprevisto e por que gera custo extra"
+                                    PlaceholderColor="#9AA0A8"
+                                    TextColor="{StaticResource OnSurface}"
+                                    FontSize="14"
+                                    AutoSize="TextChanges"
+                                    MinimumHeightRequest="100"
+                                    MaxLength="500"
+                                    BackgroundColor="Transparent" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Valor (R$)" Style="{StaticResource CampoLabel}" />
+                        <Border Style="{StaticResource CampoBorda}">
+                            <Entry x:Name="txt_valor_imprevisto"
+                                   Placeholder="0,00"
+                                   Keyboard="Numeric"
+                                   TextChanged="Moeda_TextChanged"
+                                   Style="{StaticResource CampoEntry}" />
+                        </Border>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- Avaliação -->
+                <VerticalStackLayout x:Name="stk_avaliacao" Spacing="14" IsVisible="False">
+                    <HorizontalStackLayout x:Name="stk_estrelas" Spacing="6" HorizontalOptions="Center">
+                        <Label x:Name="est_1" Style="{StaticResource Estrela}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Estrela_Tapped" CommandParameter="1" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label x:Name="est_2" Style="{StaticResource Estrela}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Estrela_Tapped" CommandParameter="2" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label x:Name="est_3" Style="{StaticResource Estrela}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Estrela_Tapped" CommandParameter="3" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label x:Name="est_4" Style="{StaticResource Estrela}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Estrela_Tapped" CommandParameter="4" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label x:Name="est_5" Style="{StaticResource Estrela}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Estrela_Tapped" CommandParameter="5" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </HorizontalStackLayout>
+
+                    <Label x:Name="lbl_nota"
+                           Text="Toque nas estrelas para dar sua nota"
+                           FontSize="12"
+                           TextColor="{StaticResource OnSurfaceVariant}"
+                           HorizontalOptions="Center" />
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Comentário (opcional)" Style="{StaticResource CampoLabel}" />
+                        <Border BackgroundColor="White"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 8"
+                                Padding="14,6">
+                            <Editor x:Name="txt_comentario"
+                                    Placeholder="Conte como foi sua experiência"
+                                    PlaceholderColor="#9AA0A8"
+                                    TextColor="{StaticResource OnSurface}"
+                                    FontSize="14"
+                                    AutoSize="TextChanges"
+                                    MinimumHeightRequest="100"
+                                    MaxLength="1000"
+                                    BackgroundColor="Transparent" />
+                        </Border>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <Button x:Name="btn_confirmar"
+                        Clicked="Confirmar_Clicked"
+                        BackgroundColor="{StaticResource Accent}"
+                        TextColor="{StaticResource OnAccent}"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        CornerRadius="8"
+                        HeightRequest="48" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:ContrataquiMobile.Models"
+             xmlns:views="clr-namespace:ContrataquiMobile.Views"
+             x:Class="ContrataquiMobile.Views.Perfil"
+             x:DataType="models:PerfilUsuario"
+             Title="Perfil"
+             BackgroundColor="#F9F9FF"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <Color x:Key="Primary">#002045</Color>
+        <Color x:Key="PrimaryContainer">#1A365D</Color>
+        <Color x:Key="Secondary">#13696A</Color>
+        <Color x:Key="Accent">#FFB866</Color>
+        <Color x:Key="OnAccent">#321B00</Color>
+        <Color x:Key="OnSurface">#111C2C</Color>
+        <Color x:Key="OnSurfaceVariant">#43474E</Color>
+        <Color x:Key="Outline">#74777F</Color>
+
+        <Style x:Key="TituloSecao" TargetType="Label">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="{StaticResource Primary}" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <views:Cabecalho x:Name="cab" Grid.Row="0" />
+
+        <Grid Grid.Row="1">
+
+            <ActivityIndicator x:Name="ind_carregando"
+                               Color="{StaticResource Secondary}"
+                               IsRunning="False"
+                               IsVisible="False"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+
+            <Label x:Name="lbl_erro"
+                   FontSize="13"
+                   TextColor="{StaticResource OnSurfaceVariant}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   Padding="24"
+                   IsVisible="False">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Erro_Tapped" />
+                </Label.GestureRecognizers>
+            </Label>
+
+            <ScrollView x:Name="scv_conteudo" IsVisible="False">
+                <VerticalStackLayout Padding="20,8,20,24" Spacing="16">
+
+                    <!-- Cartão da pessoa -->
+                    <Border BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 16"
+                            Padding="20">
+                        <VerticalStackLayout Spacing="10" HorizontalOptions="Fill">
+
+                            <Border WidthRequest="96"
+                                    HeightRequest="96"
+                                    StrokeThickness="3"
+                                    Stroke="#E7EEFF"
+                                    StrokeShape="RoundRectangle 48"
+                                    BackgroundColor="{StaticResource PrimaryContainer}"
+                                    HorizontalOptions="Center">
+                                <Grid>
+                                    <Label Text="{Binding Iniciais}"
+                                           FontSize="34"
+                                           FontAttributes="Bold"
+                                           TextColor="White"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center" />
+                                    <Image Source="{Binding ImagemPerfil}"
+                                           Aspect="AspectFill"
+                                           IsVisible="{Binding TemFoto}" />
+                                </Grid>
+                            </Border>
+
+                            <Label Text="{Binding Nome}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Primary}"
+                                   HorizontalTextAlignment="Center" />
+
+                            <Label Text="{Binding Email}"
+                                   FontSize="13"
+                                   TextColor="{StaticResource OnSurfaceVariant}"
+                                   HorizontalTextAlignment="Center" />
+
+                            <Border BackgroundColor="#E6F6F6"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 10"
+                                    Padding="10,3"
+                                    HorizontalOptions="Center">
+                                <Label Text="{Binding TipoTexto}"
+                                       FontSize="11"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Secondary}" />
+                            </Border>
+
+                            <Button Text="Editar perfil"
+                                    Clicked="Editar_Clicked"
+                                    BackgroundColor="{StaticResource Accent}"
+                                    TextColor="{StaticResource OnAccent}"
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    CornerRadius="10"
+                                    HeightRequest="46"
+                                    Margin="0,8,0,0" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Contato e localização -->
+                    <Border BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 16"
+                            Padding="20">
+                        <VerticalStackLayout Spacing="12">
+                            <Label Text="Contato e localização" Style="{StaticResource TituloSecao}" />
+
+                            <Grid IsVisible="{Binding TemTelefone}"
+                                  ColumnDefinitions="Auto,*"
+                                  ColumnSpacing="12">
+                                <Label Text="&#xE0CD;"
+                                       FontFamily="MaterialIcons"
+                                       FontSize="20"
+                                       TextColor="{StaticResource Secondary}"
+                                       VerticalOptions="Center" />
+                                <Label Grid.Column="1"
+                                       Text="{Binding Telefone}"
+                                       FontSize="14"
+                                       TextColor="{StaticResource OnSurface}"
+                                       VerticalOptions="Center" />
+                            </Grid>
+
+                            <Grid IsVisible="{Binding TemLocal}"
+                                  ColumnDefinitions="Auto,*"
+                                  ColumnSpacing="12">
+                                <Label Text="&#xE55F;"
+                                       FontFamily="MaterialIcons"
+                                       FontSize="20"
+                                       TextColor="{StaticResource Secondary}"
+                                       VerticalOptions="Center" />
+                                <Label Grid.Column="1"
+                                       Text="{Binding Local}"
+                                       FontSize="14"
+                                       TextColor="{StaticResource OnSurface}"
+                                       VerticalOptions="Center" />
+                            </Grid>
+
+                            <VerticalStackLayout IsVisible="{Binding TemEndereco}" Spacing="2">
+                                <Label Text="Endereço"
+                                       FontSize="11"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Outline}" />
+                                <Label Text="{Binding Endereco}"
+                                       FontSize="13"
+                                       TextColor="{StaticResource OnSurfaceVariant}" />
+                                <Label Text="{Binding CepTexto}"
+                                       FontSize="13"
+                                       TextColor="{StaticResource OnSurfaceVariant}" />
+                            </VerticalStackLayout>
+
+                            <Label IsVisible="{Binding SemContato}"
+                                   Text="Você ainda não informou telefone nem endereço."
+                                   FontSize="13"
+                                   TextColor="{StaticResource OnSurfaceVariant}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Sobre (profissional) -->
+                    <Border IsVisible="{Binding MostrarSobre}"
+                            BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 16"
+                            Padding="20">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Sobre" Style="{StaticResource TituloSecao}" />
+                            <Label Text="{Binding Descricao}"
+                                   FontSize="14"
+                                   LineHeight="1.3"
+                                   TextColor="{StaticResource OnSurfaceVariant}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Serviços oferecidos (profissional) -->
+                    <Border IsVisible="{Binding MostrarServicos}"
+                            BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 16"
+                            Padding="20">
+                        <VerticalStackLayout Spacing="12">
+                            <Label Text="Serviços oferecidos" Style="{StaticResource TituloSecao}" />
+
+                            <FlexLayout Wrap="Wrap"
+                                        BindableLayout.ItemsSource="{Binding ListaServicos}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="models:Servico">
+                                        <Border BackgroundColor="#E6F6F6"
+                                                StrokeThickness="0"
+                                                StrokeShape="RoundRectangle 14"
+                                                Padding="12,6"
+                                                Margin="0,0,8,8">
+                                            <Label Text="{Binding Nome}"
+                                                   FontSize="12"
+                                                   FontAttributes="Bold"
+                                                   TextColor="{StaticResource Secondary}" />
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </FlexLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Perfil público (profissional) -->
+                    <Button IsVisible="{Binding EhProfissional}"
+                            Text="Ver como o cliente vê"
+                            Clicked="VerComoCliente_Clicked"
+                            BackgroundColor="Transparent"
+                            BorderColor="{StaticResource Primary}"
+                            BorderWidth="2"
+                            TextColor="{StaticResource Primary}"
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            CornerRadius="10"
+                            HeightRequest="48" />
+
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+
+        <views:BarraNavegacao Grid.Row="2" Ativo="perfil" />
+
+    </Grid>
+</ContentPage>

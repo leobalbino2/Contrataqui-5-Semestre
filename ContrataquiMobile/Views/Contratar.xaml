@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ContrataquiMobile.Views.Contratar"
+             Title="Contratar"
+             BackgroundColor="#F9F9FF"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <Color x:Key="Primary">#002045</Color>
+        <Color x:Key="PrimaryContainer">#1A365D</Color>
+        <Color x:Key="Secondary">#13696A</Color>
+        <Color x:Key="Accent">#FFB866</Color>
+        <Color x:Key="OnAccent">#321B00</Color>
+        <Color x:Key="OnSurface">#111C2C</Color>
+        <Color x:Key="OnSurfaceVariant">#43474E</Color>
+        <Color x:Key="Outline">#74777F</Color>
+
+        <Style x:Key="CampoBorda" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="StrokeThickness" Value="0" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 8" />
+            <Setter Property="HeightRequest" Value="48" />
+            <Setter Property="Padding" Value="14,0" />
+        </Style>
+
+        <Style x:Key="CampoEntry" TargetType="Entry">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+            <Setter Property="PlaceholderColor" Value="#9AA0A8" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="VerticalOptions" Value="Center" />
+        </Style>
+
+        <Style x:Key="CampoLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Header -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto,*"
+              ColumnSpacing="4"
+              Padding="12,12,20,12">
+            <Grid WidthRequest="44" HeightRequest="44">
+                <Label Text="&#xE5C4;"
+                       FontFamily="MaterialIcons"
+                       FontSize="24"
+                       TextColor="{StaticResource Primary}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Voltar_Tapped" />
+                </Grid.GestureRecognizers>
+            </Grid>
+            <Label Grid.Column="1"
+                   Text="Contratar"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource PrimaryContainer}"
+                   VerticalOptions="Center" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,8,20,32" Spacing="18" MaximumWidthRequest="480">
+
+                <Label x:Name="lbl_para"
+                       FontSize="14"
+                       TextColor="{StaticResource OnSurfaceVariant}" />
+
+                <!-- Serviço -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Qual serviço você precisa?" Style="{StaticResource CampoLabel}" />
+                    <VerticalStackLayout x:Name="stk_servicos" Spacing="8" />
+                </VerticalStackLayout>
+
+                <!-- Título -->
+                <VerticalStackLayout Spacing="6">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Título" Style="{StaticResource CampoLabel}" />
+                        <Label x:Name="lbl_contador"
+                               Grid.Column="1"
+                               Text="0/150"
+                               FontSize="11"
+                               TextColor="{StaticResource Outline}" />
+                    </Grid>
+                    <Border Style="{StaticResource CampoBorda}">
+                        <Entry x:Name="txt_titulo"
+                               Placeholder="Ex.: Trocar a fiação da cozinha"
+                               MaxLength="150"
+                               TextChanged="Titulo_TextChanged"
+                               Style="{StaticResource CampoEntry}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Descrição -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Descreva o que precisa" Style="{StaticResource CampoLabel}" />
+                    <Border BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="14,6">
+                        <Editor x:Name="txt_descricao"
+                                Placeholder="Conte os detalhes: o que está acontecendo, medidas, quando prefere..."
+                                PlaceholderColor="#9AA0A8"
+                                TextColor="{StaticResource OnSurface}"
+                                FontSize="14"
+                                AutoSize="TextChanges"
+                                MinimumHeightRequest="110"
+                                MaxLength="2000"
+                                BackgroundColor="Transparent" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Endereço -->
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Onde o serviço será feito?" Style="{StaticResource CampoLabel}" />
+
+                    <HorizontalStackLayout x:Name="stk_usar_cadastro" Spacing="8" IsVisible="False">
+                        <CheckBox x:Name="chk_usar_cadastro"
+                                  Color="{StaticResource Secondary}"
+                                  IsChecked="True"
+                                  CheckedChanged="UsarCadastro_CheckedChanged"
+                                  VerticalOptions="Center" />
+                        <Label x:Name="lbl_endereco_cadastro"
+                               FontSize="13"
+                               TextColor="{StaticResource OnSurface}"
+                               VerticalOptions="Center"
+                               WidthRequest="280" />
+                    </HorizontalStackLayout>
+
+                    <VerticalStackLayout x:Name="stk_endereco" Spacing="10">
+                        <Border Style="{StaticResource CampoBorda}">
+                            <Entry x:Name="txt_rua"
+                                   Placeholder="Rua"
+                                   Style="{StaticResource CampoEntry}" />
+                        </Border>
+                        <Grid ColumnDefinitions="*,2*" ColumnSpacing="10">
+                            <Border Style="{StaticResource CampoBorda}">
+                                <Entry x:Name="txt_numero"
+                                       Placeholder="Nº"
+                                       Style="{StaticResource CampoEntry}" />
+                            </Border>
+                            <Border Grid.Column="1" Style="{StaticResource CampoBorda}">
+                                <Entry x:Name="txt_cidade"
+                                       Placeholder="Cidade"
+                                       Style="{StaticResource CampoEntry}" />
+                            </Border>
+                        </Grid>
+                        <Border Style="{StaticResource CampoBorda}" WidthRequest="120" HorizontalOptions="Start">
+                            <Entry x:Name="txt_uf"
+                                   Placeholder="UF"
+                                   MaxLength="2"
+                                   Style="{StaticResource CampoEntry}" />
+                        </Border>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <Label Text="O profissional recebe sua solicitação e responde com uma proposta. Você só paga o que for combinado."
+                       FontSize="12"
+                       TextColor="{StaticResource OnSurfaceVariant}" />
+
+                <Button x:Name="btn_enviar"
+                        Text="Enviar solicitação"
+                        Clicked="Enviar_Clicked"
+                        BackgroundColor="{StaticResource Accent}"
+                        TextColor="{StaticResource OnAccent}"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        CornerRadius="8"
+                        HeightRequest="48" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

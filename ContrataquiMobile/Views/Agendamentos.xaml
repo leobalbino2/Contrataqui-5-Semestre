@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:ContrataquiMobile.Models"
+             xmlns:views="clr-namespace:ContrataquiMobile.Views"
+             x:Class="ContrataquiMobile.Views.Agendamentos"
+             x:DataType="views:Agendamentos"
+             Title="Agendamentos"
+             BackgroundColor="#F9F9FF"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <Color x:Key="Primary">#002045</Color>
+        <Color x:Key="PrimaryContainer">#1A365D</Color>
+        <Color x:Key="Secondary">#13696A</Color>
+        <Color x:Key="OnSurface">#111C2C</Color>
+        <Color x:Key="OnSurfaceVariant">#43474E</Color>
+        <Color x:Key="Outline">#74777F</Color>
+        <Color x:Key="SurfaceLow">#F0F3FF</Color>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <VerticalStackLayout Grid.Row="0" Spacing="0">
+            <views:Cabecalho x:Name="cab" />
+
+            <VerticalStackLayout Padding="20,12,20,8" Spacing="12">
+                <Label Text="Agendamentos"
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Primary}" />
+
+                <!-- Ativos / Histórico -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="6"
+                      BackgroundColor="{StaticResource SurfaceLow}"
+                      Padding="4">
+                    <Border x:Name="brd_ativos"
+                            BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="0,10">
+                        <Label x:Name="lbl_ativos"
+                               Text="Ativos"
+                               FontSize="13"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Primary}"
+                               HorizontalOptions="Center" />
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Ativos_Tapped" />
+                        </Border.GestureRecognizers>
+                    </Border>
+                    <Border x:Name="brd_historico"
+                            Grid.Column="1"
+                            BackgroundColor="Transparent"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="0,10">
+                        <Label x:Name="lbl_historico"
+                               Text="Histórico"
+                               FontSize="13"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource OnSurfaceVariant}"
+                               HorizontalOptions="Center" />
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Historico_Tapped" />
+                        </Border.GestureRecognizers>
+                    </Border>
+                </Grid>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+
+        <RefreshView x:Name="rfv_lista"
+                     Grid.Row="1"
+                     RefreshColor="{StaticResource Secondary}"
+                     Refreshing="Atualizar_Refreshing">
+            <ScrollView>
+                <VerticalStackLayout Padding="20,4,20,24" Spacing="12">
+
+                    <ActivityIndicator x:Name="ind_carregando"
+                                       Color="{StaticResource Secondary}"
+                                       IsRunning="False"
+                                       IsVisible="False" />
+
+                    <Label x:Name="lbl_erro"
+                           FontSize="13"
+                           TextColor="{StaticResource OnSurfaceVariant}"
+                           HorizontalTextAlignment="Center"
+                           IsVisible="False">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Erro_Tapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <!-- Vazio -->
+                    <VerticalStackLayout x:Name="stk_vazio"
+                                         IsVisible="False"
+                                         Spacing="8"
+                                         Padding="0,48,0,0"
+                                         HorizontalOptions="Center">
+                        <Label Text="&#xE878;"
+                               FontFamily="MaterialIcons"
+                               FontSize="56"
+                               TextColor="#C4C6CF"
+                               HorizontalOptions="Center" />
+                        <Label x:Name="lbl_vazio_titulo"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Primary}"
+                               HorizontalOptions="Center" />
+                        <Label x:Name="lbl_vazio_texto"
+                               FontSize="12"
+                               TextColor="{StaticResource OnSurfaceVariant}"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+
+                    <!-- Lista -->
+                    <VerticalStackLayout Spacing="10"
+                                         BindableLayout.ItemsSource="{Binding Itens}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:Contrato">
+                                <Border BackgroundColor="White"
+                                        Stroke="#E1E8F5"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 14"
+                                        Padding="14">
+
+                                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+
+                                        <Border WidthRequest="48"
+                                                HeightRequest="48"
+                                                BackgroundColor="{StaticResource SurfaceLow}"
+                                                StrokeThickness="0"
+                                                StrokeShape="RoundRectangle 12"
+                                                VerticalOptions="Start">
+                                            <Grid>
+                                                <Label Text="{Binding ServicoInicial}"
+                                                       FontSize="18"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{StaticResource Secondary}"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center" />
+                                                <Image Source="{Binding ServicoImagem}"
+                                                       IsVisible="{Binding TemImagemServico}"
+                                                       Aspect="AspectFill" />
+                                            </Grid>
+                                        </Border>
+
+                                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                            <Label Text="{Binding Titulo}"
+                                                   FontSize="15"
+                                                   FontAttributes="Bold"
+                                                   TextColor="{StaticResource Primary}"
+                                                   MaxLines="2"
+                                                   LineBreakMode="TailTruncation" />
+                                            <Label Text="{Binding LinhaOutro}"
+                                                   FontSize="12"
+                                                   TextColor="{StaticResource OnSurfaceVariant}"
+                                                   LineBreakMode="TailTruncation" />
+
+                                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10" Margin="0,4,0,0">
+                                                <Border BackgroundColor="{Binding StatusFundo}"
+                                                        Stroke="{Binding StatusCor}"
+                                                        StrokeThickness="1"
+                                                        StrokeShape="RoundRectangle 10"
+                                                        Padding="10,3"
+                                                        HorizontalOptions="Start">
+                                                    <Label Text="{Binding StatusTexto}"
+                                                           FontSize="11"
+                                                           FontAttributes="Bold"
+                                                           TextColor="{Binding StatusCor}" />
+                                                </Border>
+                                                <Label Grid.Column="1"
+                                                       Text="{Binding ValorTexto}"
+                                                       IsVisible="{Binding TemValor}"
+                                                       FontSize="13"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{StaticResource Primary}"
+                                                       HorizontalOptions="End"
+                                                       VerticalOptions="Center" />
+                                            </Grid>
+                                        </VerticalStackLayout>
+                                    </Grid>
+
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="Item_Tapped" />
+                                    </Border.GestureRecognizers>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
+
+        <views:BarraNavegacao Grid.Row="2" Ativo="agendamentos" />
+
+    </Grid>
+</ContentPage>

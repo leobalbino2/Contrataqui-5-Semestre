@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:ContrataquiMobile.Models"
+             x:Class="ContrataquiMobile.Views.DetalheContrato"
+             x:DataType="models:Contrato"
+             Title="Contrato"
+             BackgroundColor="#F9F9FF"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <Color x:Key="Primary">#002045</Color>
+        <Color x:Key="PrimaryContainer">#1A365D</Color>
+        <Color x:Key="Secondary">#13696A</Color>
+        <Color x:Key="Accent">#FFB866</Color>
+        <Color x:Key="OnAccent">#321B00</Color>
+        <Color x:Key="OnSurface">#111C2C</Color>
+        <Color x:Key="OnSurfaceVariant">#43474E</Color>
+        <Color x:Key="Outline">#74777F</Color>
+        <Color x:Key="SurfaceLow">#F0F3FF</Color>
+
+        <Style x:Key="Cartao" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="Stroke" Value="#E1E8F5" />
+            <Setter Property="StrokeThickness" Value="1" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 14" />
+            <Setter Property="Padding" Value="16" />
+        </Style>
+
+        <Style x:Key="TituloSecao" TargetType="Label">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="{StaticResource Primary}" />
+        </Style>
+
+        <Style x:Key="Rotulo" TargetType="Label">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="TextColor" Value="{StaticResource Outline}" />
+        </Style>
+
+        <Style x:Key="BotaoPrimario" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="{StaticResource Accent}" />
+            <Setter Property="TextColor" Value="{StaticResource OnAccent}" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="HeightRequest" Value="46" />
+        </Style>
+
+        <Style x:Key="BotaoSecundario" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="{StaticResource Secondary}" />
+            <Setter Property="BorderColor" Value="{StaticResource Secondary}" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="HeightRequest" Value="46" />
+        </Style>
+
+        <Style x:Key="BotaoPerigo" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="#BA1A1A" />
+            <Setter Property="BorderColor" Value="#BA1A1A" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="HeightRequest" Value="46" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Header -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto,*"
+              ColumnSpacing="4"
+              Padding="12,12,20,12">
+            <Grid WidthRequest="44" HeightRequest="44">
+                <Label Text="&#xE5C4;"
+                       FontFamily="MaterialIcons"
+                       FontSize="24"
+                       TextColor="{StaticResource Primary}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Voltar_Tapped" />
+                </Grid.GestureRecognizers>
+            </Grid>
+            <Label Grid.Column="1"
+                   Text="Detalhes do contrato"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource PrimaryContainer}"
+                   VerticalOptions="Center" />
+        </Grid>
+
+        <Grid Grid.Row="1">
+
+            <ActivityIndicator x:Name="ind_carregando"
+                               Color="{StaticResource Secondary}"
+                               IsRunning="False"
+                               IsVisible="False"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+
+            <Label x:Name="lbl_erro"
+                   FontSize="13"
+                   TextColor="{StaticResource OnSurfaceVariant}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   Padding="24"
+                   IsVisible="False">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Erro_Tapped" />
+                </Label.GestureRecognizers>
+            </Label>
+
+            <ScrollView x:Name="scv_conteudo" IsVisible="False">
+                <VerticalStackLayout Padding="20,4,20,32" Spacing="14" MaximumWidthRequest="560">
+
+                    <!-- Título e status -->
+                    <Border Style="{StaticResource Cartao}">
+                        <VerticalStackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                <Label Text="{Binding Titulo}"
+                                       FontSize="18"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource Primary}" />
+                                <Border Grid.Column="1"
+                                        BackgroundColor="{Binding StatusFundo}"
+                                        Stroke="{Binding StatusCor}"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 10"
+                                        Padding="10,3"
+                                        VerticalOptions="Start">
+                                    <Label Text="{Binding StatusTexto}"
+                                           FontSize="11"
+                                           FontAttributes="Bold"
+                                           TextColor="{Binding StatusCor}" />
+                                </Border>
+                            </Grid>
+
+                            <Label Text="{Binding ServicoNome}"
+                                   IsVisible="{Binding TemServico}"
+                                   FontSize="13"
+                                   TextColor="{StaticResource Secondary}"
+                                   FontAttributes="Bold" />
+
+                            <!-- Andamento -->
+                            <VerticalStackLayout Spacing="4" IsVisible="{Binding MostrarProgresso}">
+                                <ProgressBar Progress="{Binding Progresso}"
+                                             ProgressColor="{StaticResource Secondary}" />
+                                <Label Text="{Binding ProgressoTexto}" Style="{StaticResource Rotulo}" />
+                            </VerticalStackLayout>
+
+                            <Label Text="{Binding MensagemFinal}"
+                                   IsVisible="{Binding TemMensagemFinal}"
+                                   FontSize="12"
+                                   TextColor="{StaticResource OnSurfaceVariant}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Aviso de imprevisto pendente (cliente) -->
+                    <Border IsVisible="{Binding MostrarAvisoImprevisto}"
+                            BackgroundColor="#FFF7ED"
+                            Stroke="#F97316"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="14">
+                        <Label Text="{Binding AvisoImprevistoTexto}"
+                               FontSize="13"
+                               FontAttributes="Bold"
+                               TextColor="#C2410C" />
+                    </Border>
+
+                    <!-- Proposta -->
+                    <Border Style="{StaticResource Cartao}" IsVisible="{Binding MostrarProposta}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Proposta" Style="{StaticResource TituloSecao}" />
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                <VerticalStackLayout>
+                                    <Label Text="Valor do serviço" Style="{StaticResource Rotulo}" />
+                                    <Label Text="{Binding ValorBaseTexto}"
+                                           FontSize="16"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource Primary}" />
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1">
+                                    <Label Text="Margem p/ imprevistos" Style="{StaticResource Rotulo}" />
+                                    <Label Text="{Binding TetoTexto}"
+                                           FontSize="16"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource Primary}" />
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <Label Text="{Binding PropostaDescricao}"
+                                   IsVisible="{Binding TemPropostaDescricao}"
+                                   FontSize="13"
+                                   TextColor="{StaticResource OnSurfaceVariant}" />
+
+                            <Button Text="Aceitar proposta"
+                                    IsVisible="{Binding BtnResponderProposta}"
+                                    Style="{StaticResource BotaoPrimario}"
+                                    Clicked="AceitarProposta_Clicked" />
+                            <Button Text="Recusar e negociar"
+                                    IsVisible="{Binding BtnResponderProposta}"
+                                    Style="{StaticResource BotaoSecundario}"
+                                    Clicked="RecusarProposta_Clicked" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Visitas -->
+                    <Border Style="{StaticResource Cartao}" IsVisible="{Binding TemVisitas}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Visitas" Style="{StaticResource TituloSecao}" />
+                            <VerticalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Visitas}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="models:ContratoVisita">
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                            <VerticalStackLayout Spacing="2">
+                                                <Label Text="{Binding DataTexto}"
+                                                       FontSize="13"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{StaticResource OnSurface}" />
+                                                <Label Text="{Binding Motivo}"
+                                                       IsVisible="{Binding TemMotivo}"
+                                                       FontSize="12"
+                                                       TextColor="{StaticResource OnSurfaceVariant}" />
+                                                <Label Text="{Binding StatusTexto}"
+                                                       FontSize="11"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{Binding StatusCor}" />
+                                            </VerticalStackLayout>
+                                            <Button Grid.Column="1"
+                                                    Text="Marcar realizada"
+                                                    IsVisible="{Binding PodeMarcar}"
+                                                    Style="{StaticResource BotaoSecundario}"
+                                                    HeightRequest="38"
+                                                    FontSize="12"
+                                                    VerticalOptions="Center"
+                                                    Clicked="VisitaRealizada_Clicked" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Imprevistos -->
+                    <Border Style="{StaticResource Cartao}" IsVisible="{Binding TemImprevistos}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Imprevistos" Style="{StaticResource TituloSecao}" />
+                            <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding Imprevistos}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="models:ContratoImprevisto">
+                                        <VerticalStackLayout Spacing="6">
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                                <Label Text="{Binding Descricao}"
+                                                       FontSize="13"
+                                                       TextColor="{StaticResource OnSurface}" />
+                                                <Label Grid.Column="1"
+                                                       Text="{Binding ValorTexto}"
+                                                       FontSize="13"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{StaticResource Primary}" />
+                                            </Grid>
+                                            <Label Text="{Binding StatusTexto}"
+                                                   FontSize="11"
+                                                   FontAttributes="Bold"
+                                                   TextColor="{Binding StatusCor}" />
+                                            <Grid ColumnDefinitions="*,*"
+                                                  ColumnSpacing="10"
+                                                  IsVisible="{Binding PodeResponder}">
+                                                <Button Text="Aprovar"
+                                                        Style="{StaticResource BotaoPrimario}"
+                                                        HeightRequest="40"
+                                                        Clicked="AprovarImprevisto_Clicked" />
+                                                <Button Grid.Column="1"
+                                                        Text="Recusar"
+                                                        Style="{StaticResource BotaoPerigo}"
+                                                        HeightRequest="40"
+                                                        Clicked="RecusarImprevisto_Clicked" />
+                                            </Grid>
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                            <Label Text="{Binding MargemRestanteTexto, StringFormat='Margem restante: {0}'}"
+                                   FontSize="11"
+                                   TextColor="{StaticResource Outline}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Descrição -->
+                    <Border Style="{StaticResource Cartao}" IsVisible="{Binding TemDescricao}">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Descrição" Style="{StaticResource TituloSecao}" />
+                            <Label Text="{Binding Descricao}"
+                                   FontSize="13"
+                                   TextColor="{StaticResource OnSurfaceVariant}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Ações -->
+                    <Border Style="{StaticResource Cartao}" IsVisible="{Binding MostrarAcoes}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Ações" Style="{StaticResource TituloSecao}" />
+
+                            <Button Text="Aceitar solicitação"
+                                    IsVisible="{Binding BtnAceitar}"
+                                    Style="{StaticResource BotaoPrimario}"
+                                    Clicked="Aceitar_Clicked" />
+                            <Button Text="Recusar solicitação"
+                                    IsVisible="{Binding BtnAceitar}"
+                                    Style="{StaticResource BotaoPerigo}"
+                                    Clicked="Recusar_Clicked" />
+
+                            <Button Text="Agendar visita"
+                                    IsVisible="{Binding BtnVisitaProposta}"
+                                    Style="{StaticResource BotaoSecundario}"
+                                    Clicked="AgendarVisita_Clicked" />
+                            <Button Text="{Binding BtnPropostaTexto}"
+                                    IsVisible="{Binding BtnVisitaProposta}"
+                                    Style="{StaticResource BotaoPrimario}"
+                                    Clicked="EnviarProposta_Clicked" />
+
+                            <Button Text="Iniciar serviço"
+                                    IsVisible="{Binding BtnIniciar}"
+                                    Style="{StaticResource BotaoPrimario}"
+                                    Clicked="Iniciar_Clicked" />
+
+                            <Button Text="Lançar imprevisto"
+                                    IsVisible="{Binding BtnImprevistoConcluir}"
+                                    Style="{StaticResource BotaoSecundario}"
+                                    Clicked="LancarImprevisto_Clicked" />
+                            <Button Text="Concluir serviço"
+                                    IsVisible="{Binding BtnImprevistoConcluir}"
+                                    Style="{StaticResource BotaoPrimario}"
+                                    Clicked="Concluir_Clicked" />
+
+                            <Button Text="{Binding BtnCancelarTexto}"
+                                    IsVisible="{Binding BtnCancelar}"
+                                    Style="{StaticResource BotaoPerigo}"
+                                    Clicked="Cancelar_Clicked" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Avaliação -->
+                    <Border Style="{StaticResource Cartao}" IsVisible="{Binding PodeAvaliar}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Como foi o serviço?" Style="{StaticResource TituloSecao}" />
+                            <Label Text="Sua avaliação ajuda outros clientes a escolher bem."
+                                   FontSize="12"
+                                   TextColor="{StaticResource OnSurfaceVariant}" />
+                            <Button Text="Avaliar profissional"
+                                    Style="{StaticResource BotaoPrimario}"
+                                    Clicked="Avaliar_Clicked" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border Style="{StaticResource Cartao}" IsVisible="{Binding MostrarMinhaAvaliacao}">
+                        <VerticalStackLayout Spacing="6" x:Name="stk_minha_avaliacao">
+                            <Label Text="Sua avaliação" Style="{StaticResource TituloSecao}" />
+                            <HorizontalStackLayout Spacing="0">
+                                <Label x:Name="lbl_estrelas_cheias" FontSize="20" TextColor="#F59E0B" />
+                                <Label x:Name="lbl_estrelas_vazias" FontSize="20" TextColor="#D1D5DB" />
+                            </HorizontalStackLayout>
+                            <Label x:Name="lbl_comentario_avaliacao"
+                                   FontSize="13"
+                                   TextColor="{StaticResource OnSurfaceVariant}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- A outra parte -->
+                    <Border Style="{StaticResource Cartao}">
+                        <VerticalStackLayout Spacing="12">
+                            <Label Text="{Binding OutroPapel}" Style="{StaticResource TituloSecao}" />
+
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                <Border WidthRequest="48"
+                                        HeightRequest="48"
+                                        BackgroundColor="{StaticResource Primary}"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 24">
+                                    <Grid>
+                                        <Label Text="{Binding OutroIniciais}"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               TextColor="White"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+                                        <Image Source="{Binding OutroFoto}"
+                                               IsVisible="{Binding OutroTemFoto}"
+                                               Aspect="AspectFill" />
+                                    </Grid>
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="{Binding OutroNome}"
+                                           FontSize="15"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource Primary}" />
+                                    <Label Text="{Binding OutroLocal}"
+                                           IsVisible="{Binding OutroTemLocal}"
+                                           FontSize="12"
+                                           TextColor="{StaticResource OnSurfaceVariant}" />
+                                    <Label Text="{Binding OutroTelefone}"
+                                           IsVisible="{Binding MostrarTelefone}"
+                                           FontSize="12"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource Secondary}" />
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <Button Text="Abrir chat"
+                                    IsVisible="{Binding ChatDisponivel}"
+                                    Style="{StaticResource BotaoSecundario}"
+                                    Clicked="AbrirChat_Clicked" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Valores e datas -->
+                    <Border Style="{StaticResource Cartao}">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Resumo" Style="{StaticResource TituloSecao}" />
+
+                            <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding TemProposta}">
+                                <Label Text="Valor do serviço" FontSize="13" TextColor="{StaticResource OnSurfaceVariant}" />
+                                <Label Grid.Column="1" Text="{Binding ValorBaseTexto}" FontSize="13" TextColor="{StaticResource OnSurface}" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding TemImprevistosAprovados}">
+                                <Label Text="Imprevistos aprovados" FontSize="13" TextColor="{StaticResource OnSurfaceVariant}" />
+                                <Label Grid.Column="1" Text="{Binding ImprevistosTexto}" FontSize="13" TextColor="{StaticResource OnSurface}" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding TemValor}">
+                                <Label Text="Total" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                                <Label Grid.Column="1" Text="{Binding ValorTexto}" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                            </Grid>
+
+                            <BoxView HeightRequest="1" Color="#E1E8F5" />
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Solicitado em" FontSize="12" TextColor="{StaticResource Outline}" />
+                                <Label Grid.Column="1" Text="{Binding SolicitadoTexto}" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding TemDataInicio}">
+                                <Label Text="Iniciado em" FontSize="12" TextColor="{StaticResource Outline}" />
+                                <Label Grid.Column="1" Text="{Binding InicioTexto}" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding TemDataConclusao}">
+                                <Label Text="Concluído em" FontSize="12" TextColor="{StaticResource Outline}" />
+                                <Label Grid.Column="1" Text="{Binding ConclusaoTexto}" FontSize="12" TextColor="{StaticResource OnSurfaceVariant}" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+    </Grid>
+</ContentPage>

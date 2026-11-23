@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ContrataquiMobile.Views.ExcluirConta"
+             Title="Excluir conta"
+             BackgroundColor="#F9F9FF"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <Color x:Key="Primary">#002045</Color>
+        <Color x:Key="PrimaryContainer">#1A365D</Color>
+        <Color x:Key="OnSurface">#111C2C</Color>
+        <Color x:Key="OnSurfaceVariant">#43474E</Color>
+        <Color x:Key="Perigo">#BA1A1A</Color>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Header -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto,*"
+              ColumnSpacing="4"
+              Padding="12,12,20,12">
+            <Grid WidthRequest="44" HeightRequest="44">
+                <Label Text="&#xE5C4;"
+                       FontFamily="MaterialIcons"
+                       FontSize="24"
+                       TextColor="{StaticResource Primary}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Voltar_Tapped" />
+                </Grid.GestureRecognizers>
+            </Grid>
+            <Label Grid.Column="1"
+                   Text="Excluir conta"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource PrimaryContainer}"
+                   VerticalOptions="Center" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,8,20,32" Spacing="18" MaximumWidthRequest="420">
+
+                <Border BackgroundColor="#FDECEA"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="16">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Esta ação não pode ser desfeita"
+                               FontSize="15"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Perigo}" />
+                        <Label Text="Seu perfil deixa de aparecer para outras pessoas e você não poderá mais entrar na conta. O histórico de contratos e avaliações é mantido."
+                               FontSize="13"
+                               TextColor="{StaticResource OnSurfaceVariant}" />
+                        <Label Text="Contas com contratos em andamento não podem ser excluídas."
+                               FontSize="13"
+                               TextColor="{StaticResource OnSurfaceVariant}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Confirme sua senha"
+                           FontSize="12"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource OnSurface}" />
+                    <Border BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 8"
+                            HeightRequest="48"
+                            Padding="14,0">
+                        <Entry x:Name="txt_senha"
+                               Placeholder="Sua senha"
+                               IsPassword="True"
+                               BackgroundColor="Transparent"
+                               TextColor="{StaticResource OnSurface}"
+                               PlaceholderColor="#9AA0A8"
+                               FontSize="14"
+                               VerticalOptions="Center" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <Button x:Name="btn_excluir"
+                        Text="Excluir minha conta"
+                        Clicked="Excluir_Clicked"
+                        BackgroundColor="{StaticResource Perigo}"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        CornerRadius="8"
+                        HeightRequest="48" />
+
+                <Button Text="Cancelar"
+                        Clicked="Cancelar_Clicked"
+                        BackgroundColor="#E7EEFF"
+                        TextColor="{StaticResource Primary}"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        CornerRadius="8"
+                        HeightRequest="48" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

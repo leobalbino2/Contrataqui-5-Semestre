@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:ContrataquiMobile.Models"
+             xmlns:views="clr-namespace:ContrataquiMobile.Views"
+             x:Class="ContrataquiMobile.Views.Explorar"
+             x:DataType="views:Explorar"
+             Title="Explorar"
+             BackgroundColor="#F9F9FF"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <Color x:Key="Primary">#002045</Color>
+        <Color x:Key="PrimaryContainer">#1A365D</Color>
+        <Color x:Key="Secondary">#13696A</Color>
+        <Color x:Key="Accent">#FFB866</Color>
+        <Color x:Key="OnAccent">#321B00</Color>
+        <Color x:Key="OnSurface">#111C2C</Color>
+        <Color x:Key="OnSurfaceVariant">#43474E</Color>
+        <Color x:Key="Outline">#74777F</Color>
+        <Color x:Key="SurfaceLow">#F0F3FF</Color>
+
+        <Style x:Key="Titulo" TargetType="Label">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="{StaticResource Primary}" />
+        </Style>
+
+        <Style x:Key="Subtitulo" TargetType="Label">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurfaceVariant}" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Header fixo -->
+        <views:Cabecalho Grid.Row="0" />
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,8,20,32" Spacing="24">
+
+                <!-- Hero + busca -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Os melhores profissionais para cuidar da sua casa"
+                           FontSize="26"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}" />
+                    <Label Text="Eletricistas, encanadores, pintores e mestres de obra verificados."
+                           FontSize="14"
+                           TextColor="{StaticResource OnSurfaceVariant}" />
+
+                    <Border BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="6"
+                            Margin="0,8,0,0">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Entry x:Name="txt_busca"
+                                   Placeholder="Busque por serviço, profissional ou cidade"
+                                   BackgroundColor="Transparent"
+                                   TextColor="{StaticResource OnSurface}"
+                                   PlaceholderColor="#9AA0A8"
+                                   FontSize="13"
+                                   Margin="8,0,0,0"
+                                   VerticalOptions="Center"
+                                   TextChanged="Busca_TextChanged"
+                                   Completed="Buscar_Clicked" />
+                            <Button Grid.Column="1"
+                                    Text="Buscar"
+                                    Clicked="Buscar_Clicked"
+                                    BackgroundColor="{StaticResource Accent}"
+                                    TextColor="{StaticResource OnAccent}"
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    CornerRadius="8"
+                                    HeightRequest="42"
+                                    Padding="16,0" />
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Categorias -->
+                <VerticalStackLayout Spacing="12">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Categorias" Style="{StaticResource Titulo}" />
+                        <Label Grid.Column="1"
+                               Text="Ver todas"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Secondary}"
+                               VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="VerTodas_Tapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+
+                    <FlexLayout Wrap="Wrap"
+                                JustifyContent="SpaceBetween"
+                                BindableLayout.ItemsSource="{Binding Categorias}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:Categoria">
+                                <Border FlexLayout.Basis="30%"
+                                        Margin="0,0,0,10"
+                                        BackgroundColor="{StaticResource SurfaceLow}"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 12"
+                                        Padding="0,14">
+                                    <VerticalStackLayout Spacing="6" HorizontalOptions="Center">
+                                        <Image Source="{Binding Icone}"
+                                               WidthRequest="32"
+                                               HeightRequest="32"
+                                               Aspect="AspectFit"
+                                               HorizontalOptions="Center" />
+                                        <Label Text="{Binding Nome}"
+                                               FontSize="11"
+                                               TextColor="{StaticResource OnSurface}"
+                                               HorizontalOptions="Center" />
+                                    </VerticalStackLayout>
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="Categoria_Tapped" />
+                                    </Border.GestureRecognizers>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </FlexLayout>
+                </VerticalStackLayout>
+
+                <!-- Profissionais -->
+                <VerticalStackLayout Spacing="12">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <VerticalStackLayout Spacing="2">
+                            <Label x:Name="lbl_titulo_prof"
+                                   Text="Mais bem avaliados"
+                                   Style="{StaticResource Titulo}" />
+                            <Label x:Name="lbl_subtitulo_prof"
+                                   Text="Profissionais verificados com as melhores notas"
+                                   Style="{StaticResource Subtitulo}" />
+                        </VerticalStackLayout>
+
+                        <Label Grid.Column="1"
+                               Text="Ver todos"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Secondary}"
+                               VerticalOptions="Start"
+                               Margin="0,4,0,0">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="VerTodosProfissionais_Tapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+
+                    <ActivityIndicator x:Name="ind_carregando"
+                                       Color="{StaticResource Secondary}"
+                                       IsRunning="False"
+                                       IsVisible="False" />
+
+                    <Label x:Name="lbl_vazio"
+                           Text="Nenhum profissional encontrado."
+                           FontSize="13"
+                           TextColor="{StaticResource OnSurfaceVariant}"
+                           HorizontalOptions="Center"
+                           IsVisible="False" />
+
+                    <VerticalStackLayout Spacing="12"
+                                         BindableLayout.ItemsSource="{Binding Profissionais}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:Profissional">
+                                <Border BackgroundColor="White"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 12"
+                                        Padding="14">
+
+                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                        <Border WidthRequest="48"
+                                                HeightRequest="48"
+                                                StrokeThickness="0"
+                                                StrokeShape="RoundRectangle 24"
+                                                BackgroundColor="{StaticResource PrimaryContainer}"
+                                                VerticalOptions="Center">
+                                            <Grid>
+                                                <Label Text="{Binding Iniciais}"
+                                                       TextColor="White"
+                                                       FontAttributes="Bold"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center" />
+                                                <Image Source="{Binding ImagemPerfil}"
+                                                       Aspect="AspectFill"
+                                                       IsVisible="{Binding TemFoto}" />
+                                            </Grid>
+                                        </Border>
+
+                                        <VerticalStackLayout Grid.Column="1"
+                                                             Spacing="2"
+                                                             VerticalOptions="Center">
+                                            <Label Text="{Binding Nome}"
+                                                   FontSize="14"
+                                                   FontAttributes="Bold"
+                                                   TextColor="{StaticResource Primary}" />
+                                            <Label Text="{Binding Especialidade}"
+                                                   Style="{StaticResource Subtitulo}" />
+                                            <Label FontSize="11"
+                                                   TextColor="{StaticResource OnSurfaceVariant}">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="★ " TextColor="#D4903B" />
+                                                        <Span Text="{Binding Nota}"
+                                                              FontAttributes="Bold"
+                                                              TextColor="{StaticResource OnSurface}" />
+                                                        <Span Text="{Binding QtdServicos, StringFormat=' ({0} serviços)'}" />
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </VerticalStackLayout>
+
+                                        <Button Grid.Column="2"
+                                                Text="Ver Perfil"
+                                                Clicked="VerPerfil_Clicked"
+                                                BackgroundColor="{StaticResource PrimaryContainer}"
+                                                TextColor="White"
+                                                FontSize="12"
+                                                FontAttributes="Bold"
+                                                CornerRadius="8"
+                                                HeightRequest="36"
+                                                Padding="16,0"
+                                                VerticalOptions="Start" />
+                                    </Grid>
+
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+
+                    <Button x:Name="btn_ver_todos"
+                            Text="Ver todos os profissionais"
+                            Clicked="VerTodosProfissionais_Clicked"
+                            IsVisible="False"
+                            BackgroundColor="#E7EEFF"
+                            TextColor="{StaticResource Primary}"
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            CornerRadius="8"
+                            HeightRequest="48" />
+                </VerticalStackLayout>
+
+                <!-- Como funciona -->
+                <Border BackgroundColor="{StaticResource PrimaryContainer}"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="18">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Como o Contrataqui funciona?"
+                               FontSize="15"
+                               FontAttributes="Bold"
+                               TextColor="White" />
+                        <Label Text="Entenda em poucos passos como contratar ou oferecer serviços."
+                               FontSize="12"
+                               TextColor="#D6E3FF" />
+                        <Label Text="Saiba mais →"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Accent}"
+                               Margin="0,6,0,0" />
+                    </VerticalStackLayout>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="ComoFunciona_Tapped" />
+                    </Border.GestureRecognizers>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Barra de navegação -->
+        <views:BarraNavegacao Grid.Row="2" Ativo="explorar" />
+
+    </Grid>
+</ContentPage>

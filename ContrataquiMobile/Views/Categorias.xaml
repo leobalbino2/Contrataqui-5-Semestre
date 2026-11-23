@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:ContrataquiMobile.Models"
+             xmlns:views="clr-namespace:ContrataquiMobile.Views"
+             x:Class="ContrataquiMobile.Views.Categorias"
+             x:DataType="views:Categorias"
+             Title="Categorias"
+             BackgroundColor="#F9F9FF"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <Color x:Key="Primary">#002045</Color>
+        <Color x:Key="PrimaryContainer">#1A365D</Color>
+        <Color x:Key="Secondary">#13696A</Color>
+        <Color x:Key="Accent">#FFB866</Color>
+        <Color x:Key="OnAccent">#321B00</Color>
+        <Color x:Key="OnSurface">#111C2C</Color>
+        <Color x:Key="OnSurfaceVariant">#43474E</Color>
+        <Color x:Key="SurfaceLow">#F0F3FF</Color>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Header -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto,*"
+              ColumnSpacing="4"
+              Padding="12,12,20,12">
+            <Grid WidthRequest="44" HeightRequest="44">
+                <Label Text="&#xE5C4;"
+                       FontFamily="MaterialIcons"
+                       FontSize="24"
+                       TextColor="{StaticResource Primary}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Voltar_Tapped" />
+                </Grid.GestureRecognizers>
+            </Grid>
+            <Label Grid.Column="1"
+                   Text="Categorias"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource PrimaryContainer}"
+                   VerticalOptions="Center" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,8,20,32" Spacing="20">
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Explore todas as categorias de serviço"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}" />
+                    <Label Text="De reparos emergenciais a grandes reformas, encontre os profissionais certos e verificados para a sua casa."
+                           FontSize="14"
+                           TextColor="{StaticResource OnSurfaceVariant}" />
+                </VerticalStackLayout>
+
+                <!-- Busca -->
+                <Border BackgroundColor="White"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="14,0"
+                        HeightRequest="48">
+                    <Entry x:Name="txt_busca"
+                           Placeholder="Pesquise uma categoria..."
+                           BackgroundColor="Transparent"
+                           TextColor="{StaticResource OnSurface}"
+                           PlaceholderColor="#9AA0A8"
+                           FontSize="14"
+                           VerticalOptions="Center"
+                           TextChanged="Busca_TextChanged" />
+                </Border>
+
+                <Label x:Name="lbl_vazio"
+                       Text="Nenhuma categoria encontrada."
+                       FontSize="13"
+                       TextColor="{StaticResource OnSurfaceVariant}"
+                       HorizontalOptions="Center"
+                       IsVisible="False" />
+
+                <!-- Lista -->
+                <VerticalStackLayout Spacing="12"
+                                     BindableLayout.ItemsSource="{Binding Resultado}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:Categoria">
+                            <Border BackgroundColor="White"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 12"
+                                    Padding="14">
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                                    <Border WidthRequest="56"
+                                            HeightRequest="56"
+                                            BackgroundColor="{StaticResource SurfaceLow}"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 12"
+                                            VerticalOptions="Start">
+                                        <Image Source="{Binding Icone}"
+                                               WidthRequest="32"
+                                               HeightRequest="32"
+                                               Aspect="AspectFit"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+                                    </Border>
+
+                                    <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                        <Label Text="{Binding Nome}"
+                                               FontSize="15"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource Primary}" />
+                                        <Label Text="{Binding Descricao}"
+                                               FontSize="12"
+                                               TextColor="{StaticResource OnSurfaceVariant}" />
+                                        <Label Text="Ver serviços →"
+                                               FontSize="12"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource Secondary}"
+                                               Margin="0,4,0,0" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="VerServicos_Tapped" />
+                                </Border.GestureRecognizers>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <views:BarraNavegacao Grid.Row="2" />
+
+    </Grid>
+</ContentPage>

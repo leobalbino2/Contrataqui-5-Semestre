@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ContrataquiMobile.Views.Cabecalho">
+
+    <VerticalStackLayout Spacing="0" BackgroundColor="#F9F9FF">
+
+        <Grid ColumnDefinitions="*,Auto,Auto"
+              ColumnSpacing="4"
+              Padding="20,12">
+
+            <Label Text="Contrataqui"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="#1A365D"
+                   VerticalOptions="Center" />
+
+            <!-- Sino -->
+            <Grid Grid.Column="1"
+                  WidthRequest="44"
+                  HeightRequest="44">
+                <Label Text="&#xE7F4;"
+                       FontFamily="MaterialIcons"
+                       FontSize="24"
+                       TextColor="#43474E"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+                <Border x:Name="pnt_notificacao"
+                        IsVisible="False"
+                        WidthRequest="10"
+                        HeightRequest="10"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 5"
+                        BackgroundColor="#D93025"
+                        HorizontalOptions="End"
+                        VerticalOptions="Start"
+                        Margin="0,10,10,0" />
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Notificacoes_Tapped" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <!-- Avatar -->
+            <Border Grid.Column="2"
+                    WidthRequest="38"
+                    HeightRequest="38"
+                    Stroke="#FFB866"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 19"
+                    BackgroundColor="#002045">
+                <Label x:Name="lbl_inicial"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Perfil_Tapped" />
+                </Border.GestureRecognizers>
+            </Border>
+        </Grid>
+
+        <BoxView HeightRequest="1" Color="#E1E8F5" />
+    </VerticalStackLayout>
+</ContentView>

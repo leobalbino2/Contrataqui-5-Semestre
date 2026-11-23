@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ContrataquiMobile.Views.AlterarSenha"
+             Title="Alterar senha"
+             BackgroundColor="#F9F9FF"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <Color x:Key="Primary">#002045</Color>
+        <Color x:Key="PrimaryContainer">#1A365D</Color>
+        <Color x:Key="Secondary">#13696A</Color>
+        <Color x:Key="Accent">#FFB866</Color>
+        <Color x:Key="OnAccent">#321B00</Color>
+        <Color x:Key="OnSurface">#111C2C</Color>
+        <Color x:Key="OnSurfaceVariant">#43474E</Color>
+        <Color x:Key="Outline">#74777F</Color>
+
+        <Style x:Key="CampoBorda" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="StrokeThickness" Value="0" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 8" />
+            <Setter Property="HeightRequest" Value="48" />
+            <Setter Property="Padding" Value="14,0" />
+        </Style>
+
+        <Style x:Key="CampoEntry" TargetType="Entry">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+            <Setter Property="PlaceholderColor" Value="#9AA0A8" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="IsPassword" Value="True" />
+        </Style>
+
+        <Style x:Key="CampoLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Header -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto,*"
+              ColumnSpacing="4"
+              Padding="12,12,20,12">
+            <Grid WidthRequest="44" HeightRequest="44">
+                <Label Text="&#xE5C4;"
+                       FontFamily="MaterialIcons"
+                       FontSize="24"
+                       TextColor="{StaticResource Primary}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Voltar_Tapped" />
+                </Grid.GestureRecognizers>
+            </Grid>
+            <Label Grid.Column="1"
+                   Text="Alterar senha"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource PrimaryContainer}"
+                   VerticalOptions="Center" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,8,20,32" Spacing="18" MaximumWidthRequest="420">
+
+                <Label Text="Escolha uma senha nova com pelo menos 8 caracteres."
+                       FontSize="14"
+                       TextColor="{StaticResource OnSurfaceVariant}" />
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Senha atual" Style="{StaticResource CampoLabel}" />
+                    <Border Style="{StaticResource CampoBorda}">
+                        <Entry x:Name="txt_atual"
+                               Placeholder="Sua senha atual"
+                               Style="{StaticResource CampoEntry}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Nova senha" Style="{StaticResource CampoLabel}" />
+                    <Border Style="{StaticResource CampoBorda}">
+                        <Entry x:Name="txt_nova"
+                               Placeholder="Mínimo 8 caracteres"
+                               Style="{StaticResource CampoEntry}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Confirmar nova senha" Style="{StaticResource CampoLabel}" />
+                    <Border Style="{StaticResource CampoBorda}">
+                        <Entry x:Name="txt_confirmar"
+                               Placeholder="Repita a nova senha"
+                               Style="{StaticResource CampoEntry}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <Label x:Name="lbl_mostrar"
+                       Text="Mostrar senhas"
+                       FontSize="12"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Secondary}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Mostrar_Tapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Button x:Name="btn_alterar"
+                        Text="Alterar senha"
+                        Clicked="Alterar_Clicked"
+                        BackgroundColor="{StaticResource Accent}"
+                        TextColor="{StaticResource OnAccent}"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        CornerRadius="8"
+                        HeightRequest="48" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

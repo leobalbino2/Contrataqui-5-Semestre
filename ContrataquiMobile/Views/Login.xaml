@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ContrataquiMobile.Views.Login"
+             Title="Login"
+             BackgroundColor="#F9F9FF"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <Color x:Key="Primary">#002045</Color>
+        <Color x:Key="Secondary">#13696A</Color>
+        <Color x:Key="Accent">#FFB866</Color>
+        <Color x:Key="OnAccent">#321B00</Color>
+        <Color x:Key="OnSurface">#111C2C</Color>
+        <Color x:Key="OnSurfaceVariant">#43474E</Color>
+        <Color x:Key="Outline">#74777F</Color>
+
+        <Style x:Key="CampoBorda" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="StrokeThickness" Value="0" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 8" />
+            <Setter Property="HeightRequest" Value="48" />
+            <Setter Property="Padding" Value="14,0" />
+        </Style>
+
+        <Style x:Key="CampoEntry" TargetType="Entry">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+            <Setter Property="PlaceholderColor" Value="#9AA0A8" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="VerticalOptions" Value="Center" />
+        </Style>
+
+        <Style x:Key="CampoLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24,0"
+                             Spacing="20"
+                             VerticalOptions="Center"
+                             MaximumWidthRequest="420">
+
+            <!-- Cabeçalho -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="CONTRATAQUI"
+                       FontSize="12"
+                       FontAttributes="Bold"
+                       CharacterSpacing="2"
+                       TextColor="{StaticResource Secondary}" />
+                <Label Text="Bem-vindo de volta!"
+                       FontSize="28"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Primary}" />
+                <Label Text="Acesse sua conta para solicitar orçamentos ou gerenciar seus serviços."
+                       FontSize="14"
+                       TextColor="{StaticResource OnSurfaceVariant}" />
+            </VerticalStackLayout>
+
+            <!-- E-mail -->
+            <VerticalStackLayout Spacing="6">
+                <Label Text="E-mail" Style="{StaticResource CampoLabel}" />
+                <Border Style="{StaticResource CampoBorda}">
+                    <Entry x:Name="txt_email"
+                           Placeholder="seu@email.com"
+                           Keyboard="Email"
+                           Style="{StaticResource CampoEntry}" />
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Senha -->
+            <VerticalStackLayout Spacing="6">
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Senha" Style="{StaticResource CampoLabel}" />
+                    <Label Grid.Column="1"
+                           Text="Esqueceu a senha?"
+                           FontSize="12"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="EsqueceuSenha_Tapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+                <Border Style="{StaticResource CampoBorda}">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <Entry x:Name="txt_senha"
+                               Placeholder="Digite sua senha"
+                               IsPassword="True"
+                               Style="{StaticResource CampoEntry}" />
+                        <Label x:Name="lbl_toggle_senha"
+                               Grid.Column="1"
+                               Text="Mostrar"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Outline}"
+                               VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="ToggleSenha_Tapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Botão -->
+            <Button x:Name="btn_entrar"
+                    Text="Entrar"
+                    Clicked="Button_Clicked"
+                    BackgroundColor="{StaticResource Accent}"
+                    TextColor="{StaticResource OnAccent}"
+                    FontAttributes="Bold"
+                    FontSize="14"
+                    CornerRadius="8"
+                    HeightRequest="48"
+                    Margin="0,4,0,0" />
+
+            <!-- Criar conta -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
+                <Label Text="Ainda não possui cadastro?"
+                       FontSize="12"
+                       TextColor="{StaticResource OnSurfaceVariant}" />
+                <Label Text="Criar conta gratuita"
+                       FontSize="12"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Secondary}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="CriarConta_Tapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

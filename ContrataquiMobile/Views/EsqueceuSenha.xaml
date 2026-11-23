@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ContrataquiMobile.Views.EsqueceuSenha"
+             Title="Esqueceu a senha"
+             BackgroundColor="#F9F9FF"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <Color x:Key="Primary">#002045</Color>
+        <Color x:Key="Secondary">#13696A</Color>
+        <Color x:Key="Accent">#FFB866</Color>
+        <Color x:Key="OnAccent">#321B00</Color>
+        <Color x:Key="OnSurface">#111C2C</Color>
+        <Color x:Key="OnSurfaceVariant">#43474E</Color>
+        <Color x:Key="Outline">#74777F</Color>
+
+        <Style x:Key="CampoBorda" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="StrokeThickness" Value="0" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 8" />
+            <Setter Property="HeightRequest" Value="48" />
+            <Setter Property="Padding" Value="14,0" />
+        </Style>
+
+        <Style x:Key="CampoEntry" TargetType="Entry">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+            <Setter Property="PlaceholderColor" Value="#9AA0A8" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="VerticalOptions" Value="Center" />
+        </Style>
+
+        <Style x:Key="CampoLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24,32"
+                             Spacing="20"
+                             VerticalOptions="Center"
+                             MaximumWidthRequest="420">
+
+            <!-- Cabeçalho -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="CONTRATAQUI"
+                       FontSize="12"
+                       FontAttributes="Bold"
+                       CharacterSpacing="2"
+                       TextColor="{StaticResource Secondary}" />
+                <Label Text="Esqueceu sua senha?"
+                       FontSize="28"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Primary}" />
+                <Label Text="Não se preocupe! Informe seu e-mail ou número cadastrado e enviaremos um link ou código para redefinir sua senha."
+                       FontSize="14"
+                       TextColor="{StaticResource OnSurfaceVariant}" />
+            </VerticalStackLayout>
+
+            <!-- Método de recuperação -->
+            <Border BackgroundColor="#DEE8FF"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 12"
+                    Padding="4">
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="4">
+                    <Border x:Name="tab_email"
+                            BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="0,10">
+                        <Label x:Name="lbl_tab_email"
+                               Text="Por e-mail"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Primary}"
+                               HorizontalOptions="Center" />
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TabEmail_Tapped" />
+                        </Border.GestureRecognizers>
+                    </Border>
+                    <Border x:Name="tab_telefone"
+                            Grid.Column="1"
+                            BackgroundColor="Transparent"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="0,10">
+                        <Label x:Name="lbl_tab_telefone"
+                               Text="WhatsApp / SMS"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource OnSurfaceVariant}"
+                               HorizontalOptions="Center" />
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TabTelefone_Tapped" />
+                        </Border.GestureRecognizers>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Campo dinâmico -->
+            <VerticalStackLayout Spacing="6">
+                <Label x:Name="lbl_campo"
+                       Text="E-mail cadastrado"
+                       Style="{StaticResource CampoLabel}" />
+                <Border Style="{StaticResource CampoBorda}">
+                    <Entry x:Name="txt_recuperacao"
+                           Placeholder="seu@email.com"
+                           Keyboard="Email"
+                           TextChanged="Recuperacao_TextChanged"
+                           Style="{StaticResource CampoEntry}" />
+                </Border>
+                <Label x:Name="lbl_ajuda"
+                       Text="Enviaremos um link de acesso para a sua caixa de entrada."
+                       FontSize="12"
+                       TextColor="{StaticResource OnSurfaceVariant}" />
+            </VerticalStackLayout>
+
+            <!-- Botão -->
+            <Button x:Name="btn_enviar"
+                    Text="Enviar instruções"
+                    Clicked="Enviar_Clicked"
+                    BackgroundColor="{StaticResource Accent}"
+                    TextColor="{StaticResource OnAccent}"
+                    FontAttributes="Bold"
+                    FontSize="14"
+                    CornerRadius="8"
+                    HeightRequest="48" />
+
+            <!-- Dica -->
+            <Border BackgroundColor="#F0F3FF"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 12"
+                    Padding="14">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="DICA"
+                           FontSize="11"
+                           FontAttributes="Bold"
+                           CharacterSpacing="1"
+                           TextColor="{StaticResource Secondary}" />
+                    <Label Text="Verifique a caixa de spam ou promoções caso não receba o link ou código em até 2 minutos."
+                           FontSize="12"
+                           TextColor="{StaticResource OnSurfaceVariant}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Voltar -->
+            <Button Text="Voltar para o login"
+                    Clicked="Voltar_Clicked"
+                    BackgroundColor="#E7EEFF"
+                    TextColor="{StaticResource Primary}"
+                    FontAttributes="Bold"
+                    FontSize="14"
+                    CornerRadius="8"
+                    HeightRequest="48" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

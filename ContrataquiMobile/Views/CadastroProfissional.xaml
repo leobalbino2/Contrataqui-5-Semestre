@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ContrataquiMobile.Views.CadastroProfissional"
+             Title="Cadastro de profissional"
+             BackgroundColor="#F9F9FF"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <Color x:Key="Primary">#002045</Color>
+        <Color x:Key="Secondary">#13696A</Color>
+        <Color x:Key="Accent">#FFB866</Color>
+        <Color x:Key="OnAccent">#321B00</Color>
+        <Color x:Key="OnSurface">#111C2C</Color>
+        <Color x:Key="OnSurfaceVariant">#43474E</Color>
+        <Color x:Key="Outline">#74777F</Color>
+
+        <Style x:Key="CampoBorda" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="StrokeThickness" Value="0" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 8" />
+            <Setter Property="HeightRequest" Value="48" />
+            <Setter Property="Padding" Value="14,0" />
+        </Style>
+
+        <Style x:Key="CampoEntry" TargetType="Entry">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+            <Setter Property="PlaceholderColor" Value="#9AA0A8" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="VerticalOptions" Value="Center" />
+        </Style>
+
+        <Style x:Key="CampoPicker" TargetType="Picker">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+            <Setter Property="TitleColor" Value="#9AA0A8" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="VerticalOptions" Value="Center" />
+        </Style>
+
+        <Style x:Key="CampoLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        </Style>
+
+        <Style x:Key="ToggleLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="{StaticResource Outline}" />
+            <Setter Property="VerticalOptions" Value="Center" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24,32"
+                             Spacing="20"
+                             MaximumWidthRequest="420">
+
+            <!-- Cabeçalho -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="CONTRATAQUI"
+                       FontSize="12"
+                       FontAttributes="Bold"
+                       CharacterSpacing="2"
+                       TextColor="{StaticResource Secondary}" />
+                <Label Text="Cadastro de profissional"
+                       FontSize="28"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Primary}" />
+                <Label Text="Junte-se à rede de profissionais qualificados e receba clientes na sua região."
+                       FontSize="14"
+                       TextColor="{StaticResource OnSurfaceVariant}" />
+            </VerticalStackLayout>
+
+            <!-- Progresso -->
+            <Border BackgroundColor="#F0F3FF"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 12"
+                    Padding="14">
+                <VerticalStackLayout Spacing="8">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label x:Name="lbl_passo"
+                               Text="PASSO 1 DE 3"
+                               FontSize="11"
+                               FontAttributes="Bold"
+                               CharacterSpacing="1"
+                               TextColor="{StaticResource Secondary}" />
+                        <Label x:Name="lbl_percentual"
+                               Grid.Column="1"
+                               Text="33% concluído"
+                               FontSize="11"
+                               TextColor="{StaticResource OnSurfaceVariant}" />
+                    </Grid>
+                    <ProgressBar x:Name="pgb_etapas"
+                                 Progress="0.33"
+                                 ProgressColor="{StaticResource Secondary}" />
+                    <Label x:Name="lbl_etapa_nome"
+                           Text="Tipos de serviço"
+                           FontSize="12"
+                           TextColor="{StaticResource OnSurfaceVariant}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ETAPA 1: Serviços -->
+            <VerticalStackLayout x:Name="stk_etapa1" Spacing="20">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Categoria" Style="{StaticResource CampoLabel}" />
+                    <Border Style="{StaticResource CampoBorda}">
+                        <Picker x:Name="pck_categoria"
+                                Title="Selecione uma categoria"
+                                SelectedIndexChanged="Categoria_Changed"
+                                Style="{StaticResource CampoPicker}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout x:Name="stk_servicos_container" Spacing="6" IsVisible="False">
+                    <Label Text="Serviços disponíveis" Style="{StaticResource CampoLabel}" />
+                    <Border BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="8">
+                        <VerticalStackLayout x:Name="stk_servicos" Spacing="0" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <Border x:Name="brd_selecionados"
+                        IsVisible="False"
+                        BackgroundColor="#E6F6F6"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="14">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="SELECIONADOS"
+                               FontSize="11"
+                               FontAttributes="Bold"
+                               CharacterSpacing="1"
+                               TextColor="{StaticResource Secondary}" />
+                        <Label x:Name="lbl_selecionados"
+                               FontSize="12"
+                               TextColor="{StaticResource OnSurfaceVariant}" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- ETAPA 2: Dados pessoais -->
+            <VerticalStackLayout x:Name="stk_etapa2" Spacing="20" IsVisible="False">
+
+                <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                    <Border WidthRequest="96"
+                            HeightRequest="96"
+                            BackgroundColor="White"
+                            Stroke="#C4C6CF"
+                            StrokeThickness="1"
+                            StrokeDashArray="4,3"
+                            StrokeShape="RoundRectangle 48">
+                        <Grid>
+                            <Label x:Name="lbl_foto_vazia"
+                                   Text="Foto"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Outline}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                            <Image x:Name="img_foto"
+                                   Aspect="AspectFill"
+                                   IsVisible="False" />
+                        </Grid>
+                    </Border>
+                    <Label Text="Adicionar uma foto"
+                           FontSize="12"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}"
+                           HorizontalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Foto_Tapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Nome e sobrenome" Style="{StaticResource CampoLabel}" />
+                    <Border Style="{StaticResource CampoBorda}">
+                        <Entry x:Name="txt_nome"
+                               Placeholder="Insira seu nome completo"
+                               Style="{StaticResource CampoEntry}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="WhatsApp / Telefone" Style="{StaticResource CampoLabel}" />
+                    <Border Style="{StaticResource CampoBorda}">
+                        <Entry x:Name="txt_telefone"
+                               Placeholder="(11) 98765-4321"
+                               Keyboard="Telephone"
+                               MaxLength="15"
+                               TextChanged="Telefone_TextChanged"
+                               Style="{StaticResource CampoEntry}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="E-mail" Style="{StaticResource CampoLabel}" />
+                    <Border Style="{StaticResource CampoBorda}">
+                        <Entry x:Name="txt_email"
+                               Placeholder="seu@email.com"
+                               Keyboard="Email"
+                               Style="{StaticResource CampoEntry}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Criar senha" Style="{StaticResource CampoLabel}" />
+                    <Border Style="{StaticResource CampoBorda}">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <Entry x:Name="txt_senha"
+                                   Placeholder="Mínimo 8 caracteres"
+                                   IsPassword="True"
+                                   Style="{StaticResource CampoEntry}" />
+                            <Label x:Name="lbl_toggle_senha"
+                                   Grid.Column="1"
+                                   Text="Mostrar"
+                                   Style="{StaticResource ToggleLabel}">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="ToggleSenha_Tapped" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+
+                <HorizontalStackLayout Spacing="8">
+                    <CheckBox x:Name="chk_termos"
+                              Color="{StaticResource Secondary}"
+                              VerticalOptions="Start" />
+                    <Label FontSize="12"
+                           TextColor="{StaticResource OnSurfaceVariant}"
+                           VerticalOptions="Center"
+                           WidthRequest="290">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Li e aceito os " />
+                                <Span Text="Termos de Uso"
+                                      FontAttributes="Bold"
+                                      TextColor="{StaticResource Secondary}" />
+                                <Span Text=" e a " />
+                                <Span Text="Política de Privacidade"
+                                      FontAttributes="Bold"
+                                      TextColor="{StaticResource Secondary}" />
+                                <Span Text=" do Contrataqui." />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+            <!-- ETAPA 3: Dados profissionais -->
+            <VerticalStackLayout x:Name="stk_etapa3" Spacing="20" IsVisible="False">
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Modalidade" Style="{StaticResource CampoLabel}" />
+                    <Border Style="{StaticResource CampoBorda}">
+                        <Picker x:Name="pck_modalidade"
+                                SelectedIndexChanged="Modalidade_Changed"
+                                Style="{StaticResource CampoPicker}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- CPF -->
+                <VerticalStackLayout x:Name="stk_cpf" Spacing="6">
+                    <Label Text="CPF" Style="{StaticResource CampoLabel}" />
+                    <Border Style="{StaticResource CampoBorda}">
+                        <Entry x:Name="txt_cpf"
+                               Placeholder="000.000.000-00"
+                               Keyboard="Numeric"
+                               MaxLength="14"
+                               TextChanged="Cpf_TextChanged"
+                               Style="{StaticResource CampoEntry}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- CNPJ -->
+                <VerticalStackLayout x:Name="stk_cnpj" Spacing="20" IsVisible="False">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="CNPJ" Style="{StaticResource CampoLabel}" />
+                        <Border Style="{StaticResource CampoBorda}">
+                            <Entry x:Name="txt_cnpj"
+                                   Placeholder="00.000.000/0000-00"
+                                   Keyboard="Numeric"
+                                   MaxLength="18"
+                                   TextChanged="Cnpj_TextChanged"
+                                   Style="{StaticResource CampoEntry}" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Nome fantasia" Style="{StaticResource CampoLabel}" />
+                        <Border Style="{StaticResource CampoBorda}">
+                            <Entry x:Name="txt_nome_fantasia"
+                                   Placeholder="Nome fantasia"
+                                   Style="{StaticResource CampoEntry}" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+
+                <!-- Endereço -->
+                <Grid ColumnDefinitions="*,2*" ColumnSpacing="12">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Estado" Style="{StaticResource CampoLabel}" />
+                        <Border Style="{StaticResource CampoBorda}">
+                            <Picker x:Name="pck_estado"
+                                    Title="UF"
+                                    Style="{StaticResource CampoPicker}" />
+                        </Border>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="6">
+                        <Label Text="Cidade" Style="{StaticResource CampoLabel}" />
+                        <Border Style="{StaticResource CampoBorda}">
+                            <Entry x:Name="txt_cidade"
+                                   Placeholder="Cidade de atuação"
+                                   Style="{StaticResource CampoEntry}" />
+                        </Border>
+                    </VerticalStackLayout>
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="CEP" Style="{StaticResource CampoLabel}" />
+                        <Border Style="{StaticResource CampoBorda}">
+                            <Entry x:Name="txt_cep"
+                                   Placeholder="00000-000"
+                                   Keyboard="Numeric"
+                                   MaxLength="9"
+                                   TextChanged="Cep_TextChanged"
+                                   Style="{StaticResource CampoEntry}" />
+                        </Border>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="6">
+                        <Label Text="Número" Style="{StaticResource CampoLabel}" />
+                        <Border Style="{StaticResource CampoBorda}">
+                            <Entry x:Name="txt_numero"
+                                   Placeholder="Número"
+                                   Style="{StaticResource CampoEntry}" />
+                        </Border>
+                    </VerticalStackLayout>
+                </Grid>
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Nome da rua" Style="{StaticResource CampoLabel}" />
+                    <Border Style="{StaticResource CampoBorda}">
+                        <Entry x:Name="txt_rua"
+                               Placeholder="Nome da rua"
+                               Style="{StaticResource CampoEntry}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Complemento (opcional)" Style="{StaticResource CampoLabel}" />
+                    <Border Style="{StaticResource CampoBorda}">
+                        <Entry x:Name="txt_complemento"
+                               Placeholder="Complemento"
+                               Style="{StaticResource CampoEntry}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Descreva sua experiência" Style="{StaticResource CampoLabel}" />
+                    <Border Style="{StaticResource CampoBorda}"
+                            HeightRequest="120"
+                            Padding="14,8">
+                        <Editor x:Name="txt_descricao"
+                                Placeholder="Conte sobre suas especialidades e certificações..."
+                                BackgroundColor="Transparent"
+                                TextColor="{StaticResource OnSurface}"
+                                PlaceholderColor="#9AA0A8"
+                                FontSize="14" />
+                    </Border>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
+            <!-- Botões -->
+            <Grid ColumnDefinitions="*,2*" ColumnSpacing="12">
+                <Button x:Name="btn_voltar"
+                        Text="Voltar"
+                        Clicked="Voltar_Clicked"
+                        BackgroundColor="#E7EEFF"
+                        TextColor="{StaticResource Primary}"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        CornerRadius="8"
+                        HeightRequest="48" />
+                <Button x:Name="btn_avancar"
+                        Grid.Column="1"
+                        Text="Continuar"
+                        Clicked="Avancar_Clicked"
+                        BackgroundColor="{StaticResource Accent}"
+                        TextColor="{StaticResource OnAccent}"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        CornerRadius="8"
+                        HeightRequest="48" />
+            </Grid>
+
+            <!-- Já tem conta -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
+                <Label Text="Já possui cadastro?"
+                       FontSize="12"
+                       TextColor="{StaticResource OnSurfaceVariant}" />
+                <Label Text="Entrar"
+                       FontSize="12"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Secondary}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Login_Tapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
