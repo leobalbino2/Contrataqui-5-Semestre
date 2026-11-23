@@ -84,7 +84,7 @@ O app mobile funcionará como um novo cliente que consome a API REST já constru
  
 **Arquitetura Básica – App Mobile integrado ao ecossistema existente.**
  
-IMAGEM
+![Preview][arqu]
  
 **Resumo da arquitetura:**
  
@@ -107,7 +107,7 @@ IMAGEM
  
 A principal funcionalidade do app é a contratação de serviços: o cliente busca profissionais, visualiza seus perfis e solicita um orçamento; o profissional visualiza e responde à solicitação; e, após a aprovação do orçamento, o cliente agenda o serviço e acompanha o atendimento e o histórico. A jornada abaixo mostra as etapas do cliente, do problema à fidelização.
  
-IMAGEM
+![Preview][jrnd]
  
 **Detalhamento da jornada do usuário**
  
@@ -275,4 +275,7 @@ Este documento apresentou o Plano de Projeto Ágil de Software do Contrataqui Mo
 O aplicativo Contrataqui cumpre os objetivos propostos no projeto ágil de desenvolvimento do app: consome a mesma API REST da versão web, mantém o backend como única fonte de verdade e cobre, em um MVP, a jornada essencial de clientes e profissionais. Dessa forma, também cumpre os objetivos do Projeto Integrador do 5º semestre do curso superior de Desenvolvimento de Software Multiplataforma.
  
 Como limitação, conforme descrito no escopo, o chat em tempo real dentro do app, as notificações push, os dashboards estatísticos e as funcionalidades administrativas não foram desenvolvidos neste semestre. Essas funcionalidades serão desenvolvidas em trabalhos futuros.
+
+[arqu]: imgs_cntrtqi/arquitetura.jpeg
+[jrnd]: imgs_cntrtqi/jornada.jpeg
  
